@@ -1,0 +1,22 @@
+#animatedTextBackground {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background: #232a42;
+}
+
+#animatedTextHeading {
+  background: url("https://previews.123rf.com/images/toricheks2016/toricheks20161904/toricheks2016190400175/120995693-pop-art-background-circles-dots-pink-against-green-comic-book.jpg") repeat;
+  font-family: 'Arbutus Slab', serif;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: -1px;
+  font-size: 15vw;
+  line-height: .8em;
+  background-size: 300%;
+}
+
