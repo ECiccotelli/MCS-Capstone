@@ -4,18 +4,63 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <script>
+        function start() {
+          gapi.load('auth2', function() {
+            auth2 = gapi.auth2.init({
+              client_id: 'PUTIDHERE.apps.googleusercontent.com'
+              // Scopes to request in addition to 'profile' and 'email'
+              //scope: 'additional'
+            });
+          });
+        }
+    </script>
     <title>Login-Capstone</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
     <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arbutus+Slab">
     <link rel="stylesheet" href="static/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="static/css/Animated-Text-Background.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="static/css/styles.css">
+
 </head>
 
 <body>
     <div class="d-flex flex-grow-1 flex-shrink-1 align-items-center" id="animatedTextBackground">
-        <h1 id="animatedTextHeading" style="font-size: 53px;padding-top: 15px;text-align: center;margin-bottom: 0px;padding-bottom: 15px;line-height: 62px;">Manhattan College Scheduler</h1><button class="btn btn-primary" data-bs-hover-animate="pulse" type="button" style="border-radius: 30px;background: #176939;border: 3px solid rgb(255,255,255);margin-top: 13px;"><i class="fa fa-google"></i>&nbsp; Login with Google</button></div>
+        <h1 id="animatedTextHeading" style="font-size: 53px;padding-top: 15px;text-align: center;margin-bottom: 0px;padding-bottom: 15px;line-height: 62px;">Manhattan College Scheduler</h1>
+        <button id="signinButton" class="btn btn-primary" type="button" style="border-radius: 30px;background: #176939;border: 3px solid rgb(255,255,255);margin-top: 13px;"><i class="fa fa-google"></i>&nbsp; Login with Google</button>
+    </div>
+    <script>
+        $('#signinButton').click(function() {
+            auth2.grantOfflineAccess().then(signInCallback);
+        });
+    </script>
+    <script>
+        function signInCallback(authResult) {
+          if (authResult['code']) {
+
+            // Send the code to the server
+            $.ajax({
+              type: 'POST',
+              url: 'http://localhost:5000/login/callback',
+              // Always include an `X-Requested-With` header in every AJAX request,
+              // to protect against CSRF attacks.
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              contentType: 'application/octet-stream; charset=utf-8',
+              success: function(result) {
+                  window.location.href = "/";
+              },
+              processData: false,
+              data: authResult['code']
+            });
+          } else {
+            // There was an error.
+          }
+        }
+    </script>
     <script src="static/js/jquery.min.js"></script>
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <script src="static/js/bs-init.js"></script>

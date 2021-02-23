@@ -11,16 +11,16 @@ $(document).ready(function() {
   });
     
   $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
-    $(this).attr('visible','false');
+    $(this).attr('style','display:none');
   });
 
   $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
-    $(this).attr('visible','true');
+    $(this).attr('style','display:true');
   });
 
   var jobCount = $('.results tbody tr[visible="true"]').length;
     $('.counter').text(jobCount + ' item');
-
+  console.log(jobCount)
   if(jobCount == '0') {$('.no-result').show();}
     else {$('.no-result').hide();}
 		  });
