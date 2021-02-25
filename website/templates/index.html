@@ -41,7 +41,7 @@
                                 </div>
                             </li>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="static/img/avatars/avatar1.jpeg"></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{name}}</span><img class="border rounded-circle img-profile" src={{image}}></a>
                                     <div
                                         class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Settings</a>
                                         <a
@@ -166,94 +166,26 @@
                         <table class="table my-0" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
-                                    <th>Start date</th>
-                                    <th>Salary</th>
+                                    <th>CRN</th>
+                                    <th>Course Name</th>
+                                    <th>Meeting Times</th>
+                                    <th>Instructor</th>
+                                    <th>Credits</th>
+                                    <th>Location</th>
+                                    <th>Type</th>
+                                    <th>Add</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr style="display:">
-                                    <td>Airi Satou</td>
-                                    <td>Accountant</td>
-                                    <td>Tokyo</td>
-                                    <td>33</td>
-                                    <td>2008/11/28</td>
-                                    <td>$162,700</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar2.jpeg">Angelica Ramos</td>
-                                    <td>Chief Executive Officer(CEO)</td>
-                                    <td>London</td>
-                                    <td>47</td>
-                                    <td>2009/10/09<br></td>
-                                    <td>$1,200,000</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar3.jpeg">Ashton Cox</td>
-                                    <td>Junior Technical Author</td>
-                                    <td>San Francisco</td>
-                                    <td>66</td>
-                                    <td>2009/01/12<br></td>
-                                    <td>$86,000</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar4.jpeg">Bradley Greer</td>
-                                    <td>Software Engineer</td>
-                                    <td>London</td>
-                                    <td>41</td>
-                                    <td>2012/10/13<br></td>
-                                    <td>$132,000</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar5.jpeg">Brenden Wagner</td>
-                                    <td>Software Engineer</td>
-                                    <td>San Francisco</td>
-                                    <td>28</td>
-                                    <td>2011/06/07<br></td>
-                                    <td>$206,850</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar1.jpeg">Brielle Williamson</td>
-                                    <td>Integration Specialist</td>
-                                    <td>New York</td>
-                                    <td>61</td>
-                                    <td>2012/12/02<br></td>
-                                    <td>$372,000</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar2.jpeg">Bruno Nash<br></td>
-                                    <td>Software Engineer</td>
-                                    <td>London</td>
-                                    <td>38</td>
-                                    <td>2011/05/03<br></td>
-                                    <td>$163,500</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar3.jpeg">Caesar Vance</td>
-                                    <td>Pre-Sales Support</td>
-                                    <td>New York</td>
-                                    <td>21</td>
-                                    <td>2011/12/12<br></td>
-                                    <td>$106,450</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar4.jpeg">Cara Stevens</td>
-                                    <td>Sales Assistant</td>
-                                    <td>New York</td>
-                                    <td>46</td>
-                                    <td>2011/12/06<br></td>
-                                    <td>$145,600</td>
-                                </tr>
-                                <tr>
-                                    <td><img class="rounded-circle mr-2" width="30" height="30" src="static/img/avatars/avatar5.jpeg">Cedric Kelly</td>
-                                    <td>Senior JavaScript Developer</td>
-                                    <td>Edinburgh</td>
-                                    <td>22</td>
-                                    <td>2012/03/29<br></td>
-                                    <td>$433,060</td>
+                                    <td>5645646</td>
+                                    <td>Accounting 202 - 03</td>
+                                    <td>Monday 8-4 Tuesday 5-6</td>
+                                    <td>Ankur Agrawal</td>
+                                    <td>3</td>
+                                    <td>RLC</td>
+                                    <td>Hybrid</td>
+                                    <td><div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="check1"><label class="custom-control-label" for="check1"></label></div></td>
                                 </tr>
                             </tbody>
                             <tfoot>
