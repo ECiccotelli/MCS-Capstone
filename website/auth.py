@@ -23,41 +23,38 @@ def login():
 
 @auth.route('/login/callback', methods = ['POST'])
 def login_callback():
-    if 'authenticated' not in session:
-        if not request.headers.get('X-Requested-With'):
-            return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
+    if not request.headers.get('X-Requested-With'):
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
-        content_type = request.headers.get("Content-Type")
-        auth_code = request.stream if content_type == "application/octet-stream" else request.get_data()
-        CLIENT_SECRET_FILE = 'website/static/secret/client_secret_205736862006-gun9p9davgcd32tj50ldlsg8u0ej8mjg.apps.googleusercontent.com.json'
+    content_type = request.headers.get("Content-Type")
+    auth_code = request.stream if content_type == "application/octet-stream" else request.get_data()
+    CLIENT_SECRET_FILE = 'website/static/secret/client_secret_205736862006-gun9p9davgcd32tj50ldlsg8u0ej8mjg.apps.googleusercontent.com.json'
 
-        # Exchange auth code for access token, refresh token, and ID token
-        credentials = client.credentials_from_clientsecrets_and_code(
-            CLIENT_SECRET_FILE,
-            ['profile', 'email'],
-            auth_code)
-        print(credentials.id_token)
-        if 'hd' not in credentials.id_token or credentials.id_token['hd'] != 'manhattan.edu':
-            return json.dumps({'success': False}), 403, {'ContentType': 'application/json'} #NOT MANHATTAN COLLEGE GMAIL
-        print('manhattan email passed')
-        client_2 = datastore.Client()
-        key = client_2.key('Users', credentials.id_token['sub'])
-        result = client_2.get(key)
-        if result is None:
-            entity = datastore.Entity(key=key)
-            entity.update({
-                'AdvisorID': 'None'
-            })
-            client_2.put(entity)
+    # Exchange auth code for access token, refresh token, and ID token
+    credentials = client.credentials_from_clientsecrets_and_code(
+        CLIENT_SECRET_FILE,
+        ['profile', 'email'],
+        session['auth_code'])
+    print(credentials.id_token)
+    if 'hd' not in credentials.id_token or credentials.id_token['hd'] != 'manhattan.edu':
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'} #NOT MANHATTAN COLLEGE GMAIL
 
-        # Get profile info from ID token
-        session['authenticated'] = True
-        session['userid'] = credentials.id_token['sub']
-        session['name'] = credentials.id_token['name']
-        session['image'] = credentials.id_token['picture']
-        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-    else:
-        return json.dumps({'success': True}), 269, {'ContentType': 'application/json'}
+    client_2 = datastore.Client()
+    key = client_2.key('Users', credentials.id_token['sub'])
+    result = client_2.get(key)
+    if result is None:
+        entity = datastore.Entity(key=key)
+        entity.update({
+            'AdvisorID': 'None'
+        })
+        client_2.put(entity)
+
+    # Get profile info from ID token
+    session['authenticated'] = True
+    session['userid'] = credentials.id_token['sub']
+    session['name'] = credentials.id_token['name']
+    session['image'] = credentials.id_token['picture']
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @auth.route('/logout') #Page Route -- A prefix if any is listed in the init.py file

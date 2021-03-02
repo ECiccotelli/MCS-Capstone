@@ -8,7 +8,7 @@
         function start() {
           gapi.load('auth2', function() {
             auth2 = gapi.auth2.init({
-              client_id: 'clientid.apps.googleusercontent.com'
+              client_id: 'PUTIDHERE.apps.googleusercontent.com'
               // Scopes to request in addition to 'profile' and 'email'
               //scope: 'additional'
             });
@@ -51,7 +51,7 @@
               },
               contentType: 'application/octet-stream; charset=utf-8',
               success: function(result) {
-                window.location.href = "/";
+                  window.location.href = "/";
               },
               processData: false,
               data: authResult['code']
