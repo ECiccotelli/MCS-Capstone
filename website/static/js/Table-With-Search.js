@@ -20,8 +20,43 @@ $(document).ready(function() {
 
   var jobCount = $('.results tbody tr[visible="true"]').length;
     $('.counter').text(jobCount + ' item');
-  console.log(jobCount)
   if(jobCount == '0') {$('.no-result').show();}
     else {$('.no-result').hide();}
 		  });
 });
+
+
+$('input[name="checkbox"]:checkbox').on('change', function() {
+    if (this.checked){
+        $(this).closest('tr').each(function() {
+            var cells = $('td', this);
+            $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td></tr>');
+        });
+    } else {
+        $(this).closest('tr').each(function() {
+            var cells = $('td', this);
+            var id = cells.eq(0).text();
+            $('#' + id).closest('tr').remove();
+        });
+    };
+});
+
+$('input[name="checkbox_mylist"]:checkbox').on('change', function() {
+    console.log('change')
+    if (!(this.checked)){
+        console.log('unchecked')
+         $('input[name="checkbox"]:checkbox').closest('tr').each(function() {
+            var cells = $('td', this);
+            var id = cells.eq(0).text()
+            console.log(id)
+            $('#' + id, this).prop("checked", false);
+         });
+    }
+});
+
+/*$('input[name="checkbox"]:checked').closest('tr').each(function() {
+    var cells = $('td', this);
+    console.log(cells)
+    $('#dataTable1').append('<tr><td>' + cells.eq(0).text() +
+        '</td><td>' + cells.eq(1).text() + '</td></tr>');
+});*/

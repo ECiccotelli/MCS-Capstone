@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Dashboard - Brand</title>
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <script src="../static/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="../static/fonts/fontawesome-all.min.css">
@@ -120,35 +123,217 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-7 col-xl-8">
-                        <div class="card shadow mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary font-weight-bold m-0">Earnings Overview</h6>
-                                <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
-                                        <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a></div>
-                                </div>
+                        <div class="card shadow" style="margin-bottom: 24px;">
+                            <div class="card-header py-3">
+                                <p class="m-0 font-weight-bold" style="color: #176939;">Employee Info</p>
                             </div>
                             <div class="card-body">
-                                <div class="chart-area"><canvas data-bs-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Earnings&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;10000&quot;,&quot;5000&quot;,&quot;15000&quot;,&quot;10000&quot;,&quot;20000&quot;,&quot;15000&quot;,&quot;25000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                                <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
+                                    <div class="cd-schedule__timeline">
+                                      <ul>
+                                        <li><span>06:00</span></li>
+                                        <li><span>07:00</span></li>
+                                        <li><span>08:00</span></li>
+                                        <li><span>09:00</span></li>
+                                        <li><span>10:00</span></li>
+                                        <li><span>11:00</span></li>
+                                        <li><span>12:00</span></li>
+                                        <li><span>01:00</span></li>
+                                        <li><span>02:00</span></li>
+                                        <li><span>03:00</span></li>
+                                        <li><span>04:00</span></li>
+                                        <li><span>05:00</span></li>
+                                        <li><span>06:00</span></li>
+                                        <li><span>07:00</span></li>
+                                        <li><span>08:00</span></li>
+                                        <li><span>09:00</span></li>
+                                        <li><span>10:00</span></li>
+                                        <li><span>11:00</span></li>
+                                      </ul>
+                                    </div> <!-- .cd-schedule__timeline -->
+
+                                    <div class="cd-schedule__events">
+                                      <ul>
+                                        <li class="cd-schedule__group">
+                                          <div class="cd-schedule__top-info"><span>Monday</span></div>
+
+                                          <ul>
+                                            <li class="cd-schedule__event">
+                                              <a data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                                <em class="cd-schedule__name">Abs Circuit</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="11:00" data-end="12:30" data-content="event-rowing-workout" data-event="event-2" href="#0">
+                                                <em class="cd-schedule__name">Rowing Workout</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="14:00" data-end="15:15"  data-content="event-yoga-1" data-event="event-3" href="#0">
+                                                <em class="cd-schedule__name">Yoga Level 1</em>
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </li>
+
+                                        <li class="cd-schedule__group">
+                                          <div class="cd-schedule__top-info"><span>Tuesday</span></div>
+
+                                          <ul>
+                                            <li class="cd-schedule__event">
+                                              <a data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2" href="#0">
+                                                <em class="cd-schedule__name">Rowing Workout</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="11:30" data-end="13:00"  data-content="event-restorative-yoga" data-event="event-4" href="#0">
+                                                <em class="cd-schedule__name">Restorative Yoga</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="13:30" data-end="15:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                                <em class="cd-schedule__name">Abs Circuit</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
+                                                <em class="cd-schedule__name">Yoga Level 1</em>
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </li>
+
+                                        <li class="cd-schedule__group">
+                                          <div class="cd-schedule__top-info"><span>Wednesday</span></div>
+
+                                          <ul>
+                                            <li class="cd-schedule__event">
+                                              <a data-start="09:00" data-end="10:15" data-content="event-restorative-yoga" data-event="event-4" href="#0">
+                                                <em class="cd-schedule__name">Restorative Yoga</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="10:45" data-end="11:45" data-content="event-yoga-1" data-event="event-3" href="#0">
+                                                <em class="cd-schedule__name">Yoga Level 1</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="12:00" data-end="13:45"  data-content="event-rowing-workout" data-event="event-2" href="#0">
+                                                <em class="cd-schedule__name">Rowing Workout</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="13:45" data-end="15:00" data-content="event-yoga-1" data-event="event-3" href="#0">
+                                                <em class="cd-schedule__name">Yoga Level 1</em>
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </li>
+
+                                        <li class="cd-schedule__group">
+                                          <div class="cd-schedule__top-info"><span>Thursday</span></div>
+
+                                          <ul>
+                                            <li class="cd-schedule__event">
+                                              <a data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                                <em class="cd-schedule__name">Abs Circuit</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="12:00" data-end="13:45" data-content="event-restorative-yoga" data-event="event-4" href="#0">
+                                                <em class="cd-schedule__name">Restorative Yoga</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="15:30" data-end="16:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                                <em class="cd-schedule__name">Abs Circuit</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="17:00" data-end="18:30"  data-content="event-rowing-workout" data-event="event-2" href="#0">
+                                                <em class="cd-schedule__name">Rowing Workout</em>
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </li>
+
+                                        <li class="cd-schedule__group">
+                                          <div class="cd-schedule__top-info"><span>Friday</span></div>
+
+                                          <ul>
+                                            <li class="cd-schedule__event">
+                                              <a data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2" href="#0">
+                                                <em class="cd-schedule__name">Rowing Workout</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="12:30" data-end="14:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                                <em class="cd-schedule__name">Abs Circuit</em>
+                                              </a>
+                                            </li>
+
+                                            <li class="cd-schedule__event">
+                                              <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
+                                                <em class="cd-schedule__name">Yoga Level 1</em>
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </li>
+                                      </ul>
+                                    </div>
+
+                                    <div class="cd-schedule-modal">
+                                      <header class="cd-schedule-modal__header">
+                                        <div class="cd-schedule-modal__content">
+                                          <span class="cd-schedule-modal__date"></span>
+                                          <h3 class="cd-schedule-modal__name"></h3>
+                                        </div>
+
+                                        <div class="cd-schedule-modal__header-bg"></div>
+                                      </header>
+
+                                      <div class="cd-schedule-modal__body">
+                                        <div class="cd-schedule-modal__event-info"></div>
+                                        <div class="cd-schedule-modal__body-bg"></div>
+                                      </div>
+
+                                      <a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
+                                    </div>
+
+                                    <div class="cd-schedule__cover-layer"></div>
+                                </div> <!-- .cd-schedule -->
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-5 col-xl-4">
-                        <div class="card shadow mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary font-weight-bold m-0">Revenue Sources</h6>
-                                <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
-                                        <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a></div>
-                                </div>
+                        <div class="card shadow" style="margin-bottom: 24px;">
+                            <div class="card-header py-3">
+                                <p class="m-0 font-weight-bold" style="color: #176939;">Employee Info</p>
                             </div>
                             <div class="card-body">
-                                <div class="chart-area"><canvas data-bs-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Direct&quot;,&quot;Social&quot;,&quot;Referral&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;50&quot;,&quot;30&quot;,&quot;15&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false},&quot;title&quot;:{}}}"></canvas></div>
-                                <div
-                                    class="text-center small mt-4"><span class="mr-2"><i class="fas fa-circle text-primary"></i>&nbsp;Direct</span><span class="mr-2"><i class="fas fa-circle text-success"></i>&nbsp;Social</span><span class="mr-2"><i class="fas fa-circle text-info"></i>&nbsp;Refferal</span></div>
-                        </div>
+                                <div class="table-responsive table mt-2 results" id="dataTable-0" role="grid" aria-describedby="dataTable_info">
+                                    <table class="table my-0" id="dataTable1">
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr></tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
                     </div>
                 </div>
             </div>
@@ -173,20 +358,24 @@
                                     <th>Credits</th>
                                     <th>Location</th>
                                     <th>Type</th>
-                                    <th>Add</th>
+                                    <th>Schedule Type</th>
+                                    <th>Add/Remove</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="display:">
-                                    <td>5645646</td>
-                                    <td>Accounting 202 - 03</td>
-                                    <td>Monday 8-4 Tuesday 5-6</td>
-                                    <td>Ankur Agrawal</td>
-                                    <td>3</td>
-                                    <td>RLC</td>
-                                    <td>Hybrid</td>
-                                    <td><div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="check1"><label class="custom-control-label" for="check1"></label></div></td>
+                            {% for res in courses %}
+                                <tr>
+                                    <td>{{res.key.id_or_name}}</td>
+                                    <td>{{res['Title']}}</td>
+                                    <td>{{res['MeetingTimes']}}</td>
+                                    <td>{{res['Instructor']}}</td>
+                                    <td>{{res['Credits']}}</td>
+                                    <td>{{res['Location']}}</td>
+                                    <td>{{res['Type']}}</td>
+                                    <td>{{res['ScheduleType']}}</td>
+                                    <td><div class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox" type="checkbox" id="package_{{res.key.id_or_name}}"><label class="custom-control-label" for="package_{{res.key.id_or_name}}"></label></div></td>
                                 </tr>
+                            {% endfor %}
                             </tbody>
                             <tfoot>
                                 <tr></tr>
@@ -320,8 +509,9 @@
         </div>
     </footer>
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
-    <script src="../static/js/jquery.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../static/js/util.js"></script> <!-- util functions included in the CodyHouse framework -->
+    <script src="../static/js/main.js"></script>
     <script src="../static/js/chart.min.js"></script>
     <script src="../static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>

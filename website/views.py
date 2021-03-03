@@ -7,7 +7,7 @@ import os
 #The blueprint is connected in the setup of the init.py file
 
 views = Blueprint('views', __name__)
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\MCS-Capstone-94761bef3d8d.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\mc-scheduleMaker-ee3731698260.json'
 client = datastore.Client()
 
 @views.route('/')
