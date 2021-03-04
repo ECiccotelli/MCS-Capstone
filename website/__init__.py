@@ -3,7 +3,7 @@ from flask import Flask
 #INIT FILE - is called main.py and is the setup for the creation of the web app
 def create_app():
     app = Flask(__name__)
-    app. config['SECRET_KEY'] = 'MCS_secret'
+    app.config['SECRET_KEY'] = 'MCS_secret'
 
 
     from .views import views

@@ -4,15 +4,13 @@ from oauth2client import client
 from google.cloud import datastore
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\MCS-Capstone-94761bef3d8d.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\mc-scheduleMaker-ee3731698260.json'
 #Blueprints are use to organize the different pages on a web app.
 #The blueprint is connected in the setup of the init.py file
 
 auth = Blueprint('auth', __name__)
 
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
-GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
-GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
+#GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
 
 @auth.route('/login') #Page Route -- A prefix if any is listed in the init.py file
 def login():
@@ -26,9 +24,11 @@ def login_callback():
     if not request.headers.get('X-Requested-With'):
         return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
+
     content_type = request.headers.get("Content-Type")
     auth_code = request.stream if content_type == "application/octet-stream" else request.get_data()
-    CLIENT_SECRET_FILE = 'website/static/secret/client_secret_205736862006-gun9p9davgcd32tj50ldlsg8u0ej8mjg.apps.googleusercontent.com.json'
+    CLIENT_SECRET_FILE = 'website/static/secret/MC-OAuthSecret.json'
+
 
     # Exchange auth code for access token, refresh token, and ID token
     credentials = client.credentials_from_clientsecrets_and_code(
