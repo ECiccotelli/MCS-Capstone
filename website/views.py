@@ -18,7 +18,7 @@ def home():
         results = list(query.fetch())
         return render_template('index.html', userid=session['userid'], name=session['name'], image=session['image'], courses=results)
     else:
-        return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST
+        return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST - TEST
 
 @views.route('/registration')
 def registration():
