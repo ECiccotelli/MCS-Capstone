@@ -23,8 +23,8 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="table.html"><i class="fab fa-wpforms"></i><span>Registration</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/registration"><i class="fab fa-wpforms"></i><span>Registration</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -57,7 +57,8 @@
             </nav>
             <div class="container-fluid">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                    <h3 class="text-dark mb-0">Dashboard</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#" style="background: #176939;"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Download Schedule</a></div>
+                    <h3 class="text-dark mb-0">Dashboard</h3>
+                </div>
                 <div class="row">
                     <div class="col-md-6 col-xl-3 mb-4">
                         <div class="card shadow border-left-primary py-2">
@@ -127,28 +128,28 @@
                             <div class="card-header py-3">
                                 <p class="m-0 font-weight-bold" style="color: #176939;">Schedule</p>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" id="schedule_main">
                                 <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
                                     <div class="cd-schedule__timeline">
                                       <ul>
-                                        <li><span>06:00</span></li>
-                                        <li><span>07:00</span></li>
-                                        <li><span>08:00</span></li>
-                                        <li><span>09:00</span></li>
-                                        <li><span>10:00</span></li>
-                                        <li><span>11:00</span></li>
-                                        <li><span>12:00</span></li>
-                                        <li><span>01:00</span></li>
-                                        <li><span>02:00</span></li>
-                                        <li><span>03:00</span></li>
-                                        <li><span>04:00</span></li>
-                                        <li><span>05:00</span></li>
-                                        <li><span>06:00</span></li>
-                                        <li><span>07:00</span></li>
-                                        <li><span>08:00</span></li>
-                                        <li><span>09:00</span></li>
-                                        <li><span>10:00</span></li>
-                                        <li><span>11:00</span></li>
+                                        <li><span>6am</span></li>
+                                        <li><span>7am</span></li>
+                                        <li><span>8am</span></li>
+                                        <li><span>9am</span></li>
+                                        <li><span>10am</span></li>
+                                        <li><span>11am</span></li>
+                                        <li><span>12pm</span></li>
+                                        <li><span>1pm</span></li>
+                                        <li><span>2pm</span></li>
+                                        <li><span>3pm</span></li>
+                                        <li><span>4pm</span></li>
+                                        <li><span>5pm</span></li>
+                                        <li><span>6pm</span></li>
+                                        <li><span>7pm</span></li>
+                                        <li><span>8pm</span></li>
+                                        <li><span>9pm</span></li>
+                                        <li><span>10pm</span></li>
+                                        <li><span>11pm</span></li>
                                       </ul>
                                     </div> <!-- .cd-schedule__timeline -->
 
@@ -159,19 +160,19 @@
 
                                           <ul>
                                             <li class="cd-schedule__event">
-                                              <a data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
+                                              <a data-start="09:30am" data-end="10:30am" data-content="event-abs-circuit" data-event="event-1" href="#0">
                                                 <em class="cd-schedule__name">Abs Circuit</em>
                                               </a>
                                             </li>
 
                                             <li class="cd-schedule__event">
-                                              <a data-start="11:00" data-end="12:30" data-content="event-rowing-workout" data-event="event-2" href="#0">
+                                              <a data-start="11:00am" data-end="12:30pm" data-content="event-rowing-workout" data-event="event-2" href="#0">
                                                 <em class="cd-schedule__name">Rowing Workout</em>
                                               </a>
                                             </li>
 
                                             <li class="cd-schedule__event">
-                                              <a data-start="14:00" data-end="15:15"  data-content="event-yoga-1" data-event="event-3" href="#0">
+                                              <a data-start="2:00pm" data-end="3:15pm"  data-content="event-yoga-1" data-event="event-3" href="#0">
                                                 <em class="cd-schedule__name">Yoga Level 1</em>
                                               </a>
                                             </li>
@@ -521,6 +522,8 @@
     <script src="../static/js/chart.min.js"></script>
     <script src="../static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js" integrity="sha512-s/XK4vYVXTGeUSv4bRPOuxSDmDlTedEpMEcAQk0t/FMd9V6ft8iXdwSBxV0eD60c6w/tjotSlKu9J2AAW1ckTA==" crossorigin="anonymous"></script>
+    <script src="https://superal.github.io/canvas2image/canvas2image.js"></script>
     <script src="../static/js/Table-With-Search.js"></script>
     <script src="../static/js/theme.js"></script>
 </body>

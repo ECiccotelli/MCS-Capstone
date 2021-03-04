@@ -20,3 +20,10 @@ def home():
     else:
         return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST
 
+@views.route('/registration')
+def registration():
+    print(session)
+    if 'authenticated' in session and session['authenticated']:
+        return render_template('table.html', userid=session['userid'], name=session['name'], image=session['image'])
+    else:
+        return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST

@@ -328,8 +328,22 @@
 	function getScheduleTimestamp(time) {
 		//accepts hh:mm format - convert hh:mm to timestamp
 		time = time.replace(/ /g,'');
-		var timeArray = time.split(':');
-		var timeStamp = parseInt(timeArray[0])*60 + parseInt(timeArray[1]);
+		if (time.includes(':')){
+			var timeArray = time.split(':');
+			var ap = timeArray[1].slice(-2);
+			var difference = 0
+			if (ap == 'pm' && parseInt(timeArray[0])!=12){
+				difference = 720;
+			}
+			var timeStamp = parseInt(timeArray[0])*60 + parseInt(timeArray[1]) + difference;
+		} else {
+			var ap = time.slice(-2);
+			var difference = 0
+			if (ap == 'pm' && parseInt(time.slice(0,-2))!=12){
+				difference = 720;
+			}
+			var timeStamp = parseInt(time.slice(0,-2))*60 + difference;
+		}
 		return timeStamp;
 	};
 

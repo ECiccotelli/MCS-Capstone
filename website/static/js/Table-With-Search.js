@@ -45,6 +45,36 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
     };
 });
 
+$("#btnSave2").click(function() {
+        html2canvas($("#schedule_main"), {
+          onrendered: function(canvas) {
+            document.body.appendChild(canvas);
+
+                // Convert and download as image
+                Canvas2Image.saveAsPNG(canvas);
+          }
+        });
+      });
+
+      function saveAs(uri, filename) {
+        var link = document.createElement('a');
+        if (typeof link.download === 'string') {
+          link.href = uri;
+          link.download = filename;
+
+          //Firefox requires the link to be in the body
+          document.body.appendChild(link);
+
+          //simulate click
+          link.click();
+
+          //remove the link when done
+          document.body.removeChild(link);
+        } else {
+          window.open(uri);
+        }
+      }
+
 /*$('input[name="checkbox"]:checked').closest('tr').each(function() {
     var cells = $('td', this);
     console.log(cells)
