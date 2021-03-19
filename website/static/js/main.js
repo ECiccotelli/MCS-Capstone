@@ -1,14 +1,11 @@
-(function() {
-	// Schedule Template - by CodyHouse.co
+var mainRun = function (reload) {
 	function ScheduleTemplate( element ) {
 		this.element = element;
 		this.timelineItems = this.element.getElementsByClassName('cd-schedule__timeline')[0].getElementsByTagName('li');
 		this.timelineStart = getScheduleTimestamp(this.timelineItems[0].textContent);
 		this.timelineUnitDuration = getScheduleTimestamp(this.timelineItems[1].textContent) - getScheduleTimestamp(this.timelineItems[0].textContent);
-		
 		this.topInfoElement = this.element.getElementsByClassName('cd-schedule__top-info')[0];
 		this.singleEvents = this.element.getElementsByClassName('cd-schedule__event');
-		
 		this.modal = this.element.getElementsByClassName('cd-schedule-modal')[0];
 		this.modalHeader = this.element.getElementsByClassName('cd-schedule-modal__header')[0];
 		this.modalHeaderBg = this.element.getElementsByClassName('cd-schedule-modal__header-bg')[0];
@@ -42,6 +39,11 @@
 			Util.addClass(this.element, 'js-schedule-loaded');
 			this.placeEvents();
 			modalOpen && this.checkEventModal(modalOpen);
+		} else if( mq == 'desktop' && reload) {
+			reload = false;
+			Util.addClass(this.element, 'js-schedule-loaded');
+			this.placeEvents();
+			modalOpen && this.checkEventModal(modalOpen);
 		} else if( mq == 'mobile' && loaded) {
 			//in this case you are on a mobile version (first load or resize from desktop)
 			Util.removeClass(this.element, 'cd-schedule--loading js-schedule-loaded');
@@ -59,7 +61,15 @@
 	ScheduleTemplate.prototype.resetEventsStyle = function() {
 		// remove js style applied to the single events
 		for(var i = 0; i < this.singleEvents.length; i++) {
-			this.singleEvents[i].removeAttribute('style');
+			if (this.singleEvents[i].style.display == 'none'){
+				this.singleEvents[i].removeAttribute('style');
+				this.singleEvents[i].style.display = 'none'
+
+			} else {
+				this.singleEvents[i].removeAttribute('style');
+			}
+
+
 		}
 	};
 
@@ -68,6 +78,12 @@
 		var self = this,
 			slotHeight = this.topInfoElement.offsetHeight;
 		for(var i = 0; i < this.singleEvents.length; i++) {
+			if (this.singleEvents[i].style.display == 'none'){
+				this.singleEvents[i].removeAttribute('style');
+				this.singleEvents[i].style.display = 'none'
+			} else {
+				this.singleEvents[i].removeAttribute('style');
+			}
 			var anchor = this.singleEvents[i].getElementsByTagName('a')[0];
 			var start = getScheduleTimestamp(anchor.getAttribute('data-start')),
 				duration = getScheduleTimestamp(anchor.getAttribute('data-end')) - start;
@@ -114,7 +130,7 @@
 		//update event content
 		this.loadEventContent(target.getAttribute('data-content'));
 		Util.addClass(this.modal, 'cd-schedule-modal--open');
-		
+
 		setTimeout(function(){
 			//fixes a flash when an event is selected - desktop version only
 			Util.addClass(target.closest('li'), 'cd-schedule__event--selected');
@@ -140,7 +156,7 @@
 
 			var modalTranslateX = parseInt((windowWidth - modalWidth)/2 - eventLeft),
 				modalTranslateY = parseInt((windowHeight - modalHeight)/2 - eventTop);
-			
+
 			var HeaderBgScaleY = modalHeight/eventHeight,
 				BodyBgScaleX = (modalWidth - eventWidth);
 
@@ -154,7 +170,7 @@
 			self.modalBodyBg.setAttribute('style', 'height:'+eventHeight+'px; width: 1px; transform: scaleY('+HeaderBgScaleY+') scaleX('+BodyBgScaleX+')');
 			//change modal modalHeaderBg height/width and scale it
 			self.modalHeaderBg.setAttribute('style', 'height: '+eventHeight+'px; width: '+eventWidth+'px; transform: scaleY('+HeaderBgScaleY+')');
-			
+
 			self.modalHeaderBg.addEventListener('transitionend', function cb(){
 				//wait for the  end of the modalHeaderBg transformation and show the modal content
 				self.animating = false;
@@ -245,7 +261,7 @@
 			self.modalHeaderBg.removeAttribute('style');
 			self.modalBodyBg.removeAttribute('style');
 			Util.removeClass(self.modal, 'cd-schedule-modal--no-transition');
-			self.animating = false;	
+			self.animating = false;
 		} else if( mq == 'desktop' && modalOpen) {
 			Util.addClass(self.modal, 'cd-schedule-modal--no-transition cd-schedule-modal--animation-completed');
 			var item = self.element.getElementsByClassName('cd-schedule__event--selected')[0],
@@ -281,7 +297,7 @@
 
 			setTimeout(function(){
 				Util.removeClass(self.modal, 'cd-schedule-modal--no-transition');
-				self.animating = false;	
+				self.animating = false;
 			}, 20);
 
 		}
@@ -295,7 +311,7 @@
 		httpRequest.onreadystatechange = function() {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
 	      if (httpRequest.status === 200) {
-	      	self.modal.getElementsByClassName('cd-schedule-modal__event-info')[0].innerHTML = self.getEventContent(httpRequest.responseText); 
+	      	self.modal.getElementsByClassName('cd-schedule-modal__event-info')[0].innerHTML = self.getEventContent(httpRequest.responseText);
 	      	Util.addClass(self.modal, 'cd-schedule-modal--content-loaded');
 	      }
 	    }
@@ -320,7 +336,7 @@
 	};
 
 	ScheduleTemplate.prototype.mq = function(){
-		//get MQ value ('desktop' or 'mobile') 
+		//get MQ value ('desktop' or 'mobile')
 		var self = this;
 		return window.getComputedStyle(this.element, '::before').getPropertyValue('content').replace(/'|"/g, "");
 	};
@@ -347,9 +363,10 @@
 		return timeStamp;
 	};
 
-	var scheduleTemplate = document.getElementsByClassName('js-cd-schedule'),	
+	var scheduleTemplate = document.getElementsByClassName('js-cd-schedule'),
 		scheduleTemplateArray = [],
 		resizing = false;
+
 	if( scheduleTemplate.length > 0 ) { // init ScheduleTemplate objects
 		for( var i = 0; i < scheduleTemplate.length; i++) {
 			(function(i){
@@ -357,7 +374,7 @@
 			})(i);
 		}
 
-		window.addEventListener('resize', function(event) { 
+		window.addEventListener('resize', function(event) {
 			// on resize - update events position and modal position (if open)
 			if( !resizing ) {
 				resizing = true;
@@ -381,4 +398,223 @@
 			resizing = false;
 		};
 	}
-}());
+
+};
+var count = 0;
+var dict = {};
+
+mainRun();
+$('input[name="checkbox"]:checkbox').on('change', function() {
+    var $this = $(this);
+    var row = $this.closest('tr');
+	var reload = true;
+    if (this.checked){
+        count++;
+        count = count%7;
+        $(this).closest('tr').each(function() {
+            var cells = $('td', this);
+            var trimmedmylist = $.trim('MYLIST'+cells.eq(0).text().replace(" ",""));
+            var trimmedcrn = $.trim('CRN'+cells.eq(0).text().replace(" ",""));
+
+            var meetingTimes = ((($.trim(cells.eq(2).text()).replace(/^\s*[\r\n]/gm, '')).replace(/\n+/g, ',')).replace(/\s+/g, '')).split(',');
+            dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1];
+            if ($.isEmptyObject(findConflicts(dict))){
+                $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" checked><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
+                for(var i = 0; i < meetingTimes.length; i++) {
+                    var daytime = meetingTimes[i].split(/:(.+)/);
+                    var day = daytime[0];
+                    var time = daytime[1].split('-');
+                    var starttime = time[0]
+                    var endtime = time[1]
+                    var coursedata = (cells.eq(1).text()).split('-');
+                    var course = coursedata[coursedata.length-2]+'-'+coursedata[coursedata.length-1];
+                    $('#'+day).append('<li id="'+trimmedcrn+'" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
+                }
+             } else {
+                $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" ><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
+                for(var i = 0; i < meetingTimes.length; i++) {
+                    var daytime = meetingTimes[i].split(/:(.+)/);
+                    var day = daytime[0];
+                    var time = daytime[1].split('-');
+                    var starttime = time[0]
+                    var endtime = time[1]
+                    var coursedata = (cells.eq(1).text()).split('-');
+                    var course = coursedata[coursedata.length-2]+'-'+coursedata[coursedata.length-1];
+                    $('#'+day).append('<li id="'+trimmedcrn+'" hidden="true" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
+                }
+             }
+            mainRun(reload);
+            row.insertBefore( row.parent().find('tr:first-child') );
+        });
+    } else {
+        $(this).closest('tr').each(function() {
+            var cells = $('td', this);
+            delete dict[(cells.eq(0).text().replace(/\s+/g, ''))];
+            var id = cells.eq(0).text().replace(" ", "");
+            $('#CRN'+id).remove();
+            $('#MYLIST'+id).closest('tr').remove();
+			mainRun(reload);
+            row.insertAfter( row.parent().find('tr:last-child') );
+        });
+    };
+});
+
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
+$(document).ready(function() {
+    $('input[id^=select]').each(function() {
+        $(this).trigger('click');
+        var MYLIST = '#MYLIST' + ((this.id).split('_'))[1];
+        if ((this.id).includes('select0_')){
+            $(MYLIST).trigger('click');
+        }
+    });
+});
+
+$('#mycoursesbody').on('change', 'input', debounce(function() {
+    var $this = $(this);
+    console.log('disabled');
+    $this.attr('disabled');
+	var id = this.id.replace(/\D/g,'');;
+    if (this.checked){
+        dict[(id.replace(/\s+/g, ''))][2] = 1;
+        if ($.isEmptyObject(findConflicts(dict))){
+            console.log(findConflicts(dict));
+            console.log('tedstsdf');
+            var attr = $('li[name="CRN'+id+'"]').attr('hidden');
+            if (typeof attr !== typeof undefined && attr !== false) {
+                $('li[name="CRN'+id+'"]').removeAttr('hidden');
+            }
+            $('li[name="CRN'+id+'"]').show(500);
+        } else {
+            if (this.checked){
+                $(this).trigger('click');
+                dict[(id.replace(/\s+/g, ''))][2] = 0;
+            };
+
+        };
+	} else {
+        dict[(id.replace(/\s+/g, ''))][2] = 0;
+        $('li[name="CRN'+id+'"]').hide(500, function(){
+			$('li[name="CRN'+id+'"]').attr("hidden","true");
+		});
+	};
+    $this.removeAttr('disabled');
+}, 500));
+
+$("#saveSchedule").click(function() {
+  $("#listdata").attr("value", JSON.stringify(dict));
+  $("#savingbuttoncss").click();
+});
+
+$(function() {
+    $("#btnSave").click(function() {
+        html2canvas($("#schedule_main"), {
+            onrendered: function(canvas) {
+                theCanvas = canvas;
+
+
+                canvas.toBlob(function(blob) {
+                    saveAs(blob, "Dashboard.png");
+                });
+            }
+        });
+    });
+});
+
+// Convert String time to int time in military format
+function convertTime(time){
+  var isPM = (time.includes("pm"));
+  var [hour, minute] = time.split(':');
+  minute = minute.split(' ')[0];
+
+  if (isPM && parseInt(hour) >= 1 && parseInt(hour) != 12) {
+    hour = parseInt(hour) + 12;
+  } else if (!isPM && parseInt(hour) == 12) {
+    hour = 0;
+  }
+
+  hour = hour.toString();
+  convertedTime = parseInt(hour + minute);
+
+  return convertedTime;
+}
+
+
+// Find conflicts from a Dictionary of courses and time
+// Returns dictionary of Days and their conflicting courses
+
+// Following Format Assumed: {"12345": ["How to Make a Nuclear Bomb - CMPT 399 - 02",["T:9:20am-10:35am","R:9:20am-10:35am","F:3:00pm-5:00pm"]]}
+
+function findConflicts(courses) {
+
+  var conflictDict = {};
+  var weekdaySchedule = {};
+
+  // Iterate through dictionary
+  for (let crn in courses) {
+    var courseInfo = courses[crn];
+
+    var courseName = courseInfo[0];
+    var courseDaysAndTimes = courseInfo[1];
+    if (courseInfo[2] != 0){
+      // Iterate through class times
+      for (s of courseDaysAndTimes) {
+        day = s[0];
+        timeInterval = s.slice(2);
+        var [startTime, endTime] = timeInterval.split('-');
+        startTime = convertTime(startTime);
+        endTime = convertTime(endTime);
+
+        // Add course info to dictionary
+        if (day in weekdaySchedule) {
+          weekdaySchedule[day].push([startTime, endTime, courseName]);
+        } else {
+          weekdaySchedule[day] = [[startTime, endTime, courseName]];
+        }
+      }
+    }
+
+  }
+
+  // Loop through days and check for conflicts
+  for (var [day, times] of Object.entries(weekdaySchedule)) {
+
+    times.sort((a, b) => a[0] - b[0]); // Sort course by start times
+
+    for (i = 1; i < times.length; i++) {
+      startTime = times[i][0];
+      lastEndTime = times[i - 1][1];
+
+      if (startTime < lastEndTime) {
+        conflictingClass1 = times[i - 1][2];
+        conflictingClass2 = times[i][2];
+
+        // Add conflicting courses to conflictDict
+        if (day in conflictDict) {
+          conflictDict[day].add(conflictingClass1);
+          conflictDict[day].add(conflictingClass2);
+        } else {
+          conflictDict[day] = new Set();
+          conflictDict[day].add(conflictingClass1);
+          conflictDict[day].add(conflictingClass2);
+        }
+      }
+    }
+  }
+
+  return conflictDict;
+}

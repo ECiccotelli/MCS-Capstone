@@ -7,10 +7,15 @@
     <title>Dashboard - Brand</title>
     <script>document.getElementsByTagName("html")[0].className += " js";</script>
     <script src="../static/js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <link rel="stylesheet" href="static/css/styles.css">
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="../static/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
 </head>
 
 <body id="page-top">
@@ -19,7 +24,7 @@
             <div class="container-fluid d-flex flex-column p-0">
                 <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
+                    <div class="sidebar-brand-text mx-3"><span>MCS</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
@@ -45,11 +50,9 @@
                             </li>
                             <li class="nav-item dropdown no-arrow">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{name}}</span><img class="border rounded-circle img-profile" src={{image}}></a>
-                                    <div
-                                        class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Settings</a>
-                                        <a
-                                            class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a></div>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
+                                        <a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
                     </div>
                     </li>
                     </ul>
@@ -58,72 +61,23 @@
             <div class="container-fluid">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
                     <h3 class="text-dark mb-0">Dashboard</h3>
+                    <span>
+                        <div class="row">
+                            <a id="btnSave" class="btn btn-primary btn-icon-split" role="button" style="margin-right: 8px;">
+                                <span class="text-white text">Download Schedule</span>
+                            </a>
+                            <a id="saveSchedule" class="btn btn-success btn-icon-split" role="button">
+                                <span class="text-white text">Save Schedule</span>
+                            </a>
+                            <form method="post">
+                                <input type="hidden" id="listdata" name="mylistdata" value="">
+                                <input id="savingbuttoncss" class="btn btn-success btn-icon-split" type="submit" value="Save Schedule" hidden>
+                            </form>
+                        </div>
+                    </span>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-primary py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Earnings (monthly)</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>$40,000</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-calendar fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-success py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Earnings (annual)</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>$215,000</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-info py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Tasks</span></div>
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col-auto">
-                                                <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50%</span></div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"><span class="sr-only">50%</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xl-3 mb-4">
-                        <div class="card shadow border-left-warning py-2">
-                            <div class="card-body">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pending Requests</span></div>
-                                        <div class="text-dark font-weight-bold h5 mb-0"><span>18</span></div>
-                                    </div>
-                                    <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-7 col-xl-8">
+                    <div id="schedulecss" class="col-lg-7 col-xl-8">
                         <div class="card shadow" style="margin-bottom: 24px;">
                             <div class="card-header py-3">
                                 <p class="m-0 font-weight-bold" style="color: #176939;">Schedule</p>
@@ -157,139 +111,31 @@
                                       <ul>
                                         <li class="cd-schedule__group">
                                           <div class="cd-schedule__top-info"><span>Monday</span></div>
-
-                                          <ul>
-                                            <li class="cd-schedule__event">
-                                              <a data-start="09:30am" data-end="10:30am" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                                <em class="cd-schedule__name">Abs Circuit</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="11:00am" data-end="12:30pm" data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                                <em class="cd-schedule__name">Rowing Workout</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="2:00pm" data-end="3:15pm"  data-content="event-yoga-1" data-event="event-3" href="#0">
-                                                <em class="cd-schedule__name">Yoga Level 1</em>
-                                              </a>
-                                            </li>
+                                          <ul id="M">
                                           </ul>
                                         </li>
 
                                         <li class="cd-schedule__group">
                                           <div class="cd-schedule__top-info"><span>Tuesday</span></div>
-
-                                          <ul>
-                                            <li class="cd-schedule__event">
-                                              <a data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                                <em class="cd-schedule__name">Rowing Workout</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="11:30" data-end="13:00"  data-content="event-restorative-yoga" data-event="event-4" href="#0">
-                                                <em class="cd-schedule__name">Restorative Yoga</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="13:30" data-end="15:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                                <em class="cd-schedule__name">Abs Circuit</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
-                                                <em class="cd-schedule__name">Yoga Level 1</em>
-                                              </a>
-                                            </li>
+                                          <ul id="T">
                                           </ul>
                                         </li>
 
                                         <li class="cd-schedule__group">
                                           <div class="cd-schedule__top-info"><span>Wednesday</span></div>
-
-                                          <ul>
-                                            <li class="cd-schedule__event">
-                                              <a data-start="09:00" data-end="10:15" data-content="event-restorative-yoga" data-event="event-4" href="#0">
-                                                <em class="cd-schedule__name">Restorative Yoga</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="10:45" data-end="11:45" data-content="event-yoga-1" data-event="event-3" href="#0">
-                                                <em class="cd-schedule__name">Yoga Level 1</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="12:00" data-end="13:45"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                                <em class="cd-schedule__name">Rowing Workout</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="13:45" data-end="15:00" data-content="event-yoga-1" data-event="event-3" href="#0">
-                                                <em class="cd-schedule__name">Yoga Level 1</em>
-                                              </a>
-                                            </li>
+                                          <ul id="W">
                                           </ul>
                                         </li>
 
                                         <li class="cd-schedule__group">
                                           <div class="cd-schedule__top-info"><span>Thursday</span></div>
-
-                                          <ul>
-                                            <li class="cd-schedule__event">
-                                              <a data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                                <em class="cd-schedule__name">Abs Circuit</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="12:00" data-end="13:45" data-content="event-restorative-yoga" data-event="event-4" href="#0">
-                                                <em class="cd-schedule__name">Restorative Yoga</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="15:30" data-end="16:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                                <em class="cd-schedule__name">Abs Circuit</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="17:00" data-end="18:30"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                                <em class="cd-schedule__name">Rowing Workout</em>
-                                              </a>
-                                            </li>
+                                          <ul id="R">
                                           </ul>
                                         </li>
 
                                         <li class="cd-schedule__group">
                                           <div class="cd-schedule__top-info"><span>Friday</span></div>
-
-                                          <ul>
-                                            <li class="cd-schedule__event">
-                                              <a data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                                <em class="cd-schedule__name">Rowing Workout</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="12:30" data-end="14:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                                <em class="cd-schedule__name">Abs Circuit</em>
-                                              </a>
-                                            </li>
-
-                                            <li class="cd-schedule__event">
-                                              <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
-                                                <em class="cd-schedule__name">Yoga Level 1</em>
-                                              </a>
-                                            </li>
+                                          <ul id="F">
                                           </ul>
                                         </li>
                                       </ul>
@@ -324,7 +170,7 @@
                                 <p class="m-0 font-weight-bold" style="color: #176939;">My Course List</p>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive table mt-2 results" id="dataTable-0" role="grid" aria-describedby="dataTable_info">
+                                <div class="table-responsive table mt-2" id="dataTable-0" role="grid" aria-describedby="dataTable_info">
                                     <table class="table my-0" id="dataTable1">
                                         <thead>
                                             <tr>
@@ -332,7 +178,7 @@
                                                 <th style="text-align: right; padding-right: 19px;"><i class="fa fa-eye"></i></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id='mycoursesbody'>
                                         </tbody>
                                         <tfoot>
                                             <tr></tr>
@@ -373,14 +219,35 @@
                             {% for res in courses %}
                                 <tr>
                                     <td>{{res.key.id_or_name}}</td>
-                                    <td>{{res['Title']}}</td>
-                                    <td>{{res['MeetingTimes']}}</td>
+                                    {% set crn = res.key.id_or_name|trim %}
+                                    <td>{{res['Title']}} - {{res['Abbreviation']}} - {{res['Section']}}</td>
+
+                                    <td style="white-space: nowrap;">
+                                        {% set times = res['MeetingTimes'].split(',') %}
+                                        {% set len = times | length %}
+                                        {% for time in times %}
+                                            {% if len > 1 %}
+                                                {{time}}<br>
+                                                {% set len = (len-1) %}
+                                            {% else %}
+                                                {{time}}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
                                     <td>{{res['Instructor']}}</td>
                                     <td>{{res['Credits']}}</td>
                                     <td>{{res['Location']}}</td>
                                     <td>{{res['Type']}}</td>
                                     <td>{{res['ScheduleType']}}</td>
-                                    <td><div class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox" type="checkbox" id="package_{{res.key.id_or_name}}"><label class="custom-control-label" for="package_{{res.key.id_or_name}}"></label></div></td>
+                                    {% if crn in mylist.keys() %}
+                                        {% if mylist[crn][2] == 1 %}
+                                            <td><div class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox" type="checkbox" id="select1_{{crn}}"><label class="custom-control-label" for="select1_{{crn}}"></label></div></td>
+                                        {% else %}
+                                            <td><div class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox" type="checkbox" id="select0_{{crn}}"><label class="custom-control-label" for="select0_{{crn}}"></label></div></td>
+                                        {% endif %}
+                                    {% else %}
+                                        <td><div class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox" type="checkbox" id="package_{{crn}}"><label class="custom-control-label" for="package_{{crn}}"></label></div></td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -391,125 +258,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6 mb-4">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="text-primary font-weight-bold m-0">Projects</h6>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="small font-weight-bold">Server migration<span class="float-right">20%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">20%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Sales tracking<span class="float-right">40%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-warning" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="sr-only">40%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Customer Database<span class="float-right">60%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-primary" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"><span class="sr-only">60%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Payout Details<span class="float-right">80%</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-info" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"><span class="sr-only">80%</span></div>
-                            </div>
-                            <h4 class="small font-weight-bold">Account setup<span class="float-right">Complete!</span></h4>
-                            <div class="progress mb-4">
-                                <div class="progress-bar bg-success" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"><span class="sr-only">100%</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="text-primary font-weight-bold m-0">Todo List</h6>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">10:30 AM</span></div>
-                                    <div class="col-auto">
-                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-1"><label class="custom-control-label" for="formCheck-1"></label></div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">11:30 AM</span></div>
-                                    <div class="col-auto">
-                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-2"><label class="custom-control-label" for="formCheck-2"></label></div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col mr-2">
-                                        <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">12:30 AM</span></div>
-                                    <div class="col-auto">
-                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-3"><label class="custom-control-label" for="formCheck-3"></label></div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="row">
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-primary shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Primary</p>
-                                    <p class="text-white-50 small m-0">#4e73df</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-success shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Success</p>
-                                    <p class="text-white-50 small m-0">#1cc88a</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-info shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Info</p>
-                                    <p class="text-white-50 small m-0">#36b9cc</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-warning shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Warning</p>
-                                    <p class="text-white-50 small m-0">#f6c23e</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-danger shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Danger</p>
-                                    <p class="text-white-50 small m-0">#e74a3b</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-4">
-                            <div class="card text-white bg-secondary shadow">
-                                <div class="card-body">
-                                    <p class="m-0">Secondary</p>
-                                    <p class="text-white-50 small m-0">#858796</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
+            </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
@@ -522,8 +272,6 @@
     <script src="../static/js/chart.min.js"></script>
     <script src="../static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js" integrity="sha512-s/XK4vYVXTGeUSv4bRPOuxSDmDlTedEpMEcAQk0t/FMd9V6ft8iXdwSBxV0eD60c6w/tjotSlKu9J2AAW1ckTA==" crossorigin="anonymous"></script>
-    <script src="https://superal.github.io/canvas2image/canvas2image.js"></script>
     <script src="../static/js/Table-With-Search.js"></script>
     <script src="../static/js/theme.js"></script>
 </body>
