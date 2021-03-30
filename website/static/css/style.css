@@ -3029,10 +3029,10 @@ mark {
     font-size: var(--text-sm);
 }
 :root {
-    --cd-color-event-1: hsl(199, 25%, 46%);
-    --cd-color-event-1-h: 199;
-    --cd-color-event-1-s: 25%;
-    --cd-color-event-1-l: 46%;
+    --cd-color-event-1: hsl(282, 41%, 37%);
+    --cd-color-event-1-h: 282;
+    --cd-color-event-1-s: 41%;
+    --cd-color-event-1-l: 37%;
     --cd-color-event-2: hsl(271, 23%, 26%);
     --cd-color-event-2-h: 271;
     --cd-color-event-2-s: 23%;
@@ -3045,6 +3045,22 @@ mark {
     --cd-color-event-4-h: 31;
     --cd-color-event-4-s: 89%;
     --cd-color-event-4-l: 68%;
+    --cd-color-event-5: hsl(256, 31%, 46%);
+    --cd-color-event-5-h: 256;
+    --cd-color-event-5-s: 31%;
+    --cd-color-event-5-l: 46%;
+    --cd-color-event-6: hsl(234, 33%, 28%);
+    --cd-color-event-6-h: 234;
+    --cd-color-event-6-s: 33%;
+    --cd-color-event-6-l: 28%;
+    --cd-color-event-7: hsl(229, 52%, 36%);
+    --cd-color-event-7-h: 229;
+    --cd-color-event-7-s: 41%;
+    --cd-color-event-7-l: 37%;
+    --cd-color-event-8: hsl(59, 42%, 24%);
+    --cd-color-event-8-h: 59;
+    --cd-color-event-8-s: 42%;
+    --cd-color-event-8-l: 24%;
     --cd-color-text: hsl(0, 0%, 13%);
     --cd-color-text-h: 0;
     --cd-color-text-s: 0%;
@@ -3326,19 +3342,14 @@ a {
         margin-bottom: var(--space-xxxxs);
     }
 }
-.cd-schedule__event [data-event="event-0"],
-.cd-schedule-modal[data-event="event-0"] .cd-schedule-modal__header-bg {
-    background: hsl(123, 35%, 52%);
-    background: var(--cd-color-event-0);
-}
 .cd-schedule__event [data-event="event-1"],
 .cd-schedule-modal[data-event="event-1"] .cd-schedule-modal__header-bg {
-    background: hsl(199, 25%, 46%);
+    background:  hsl(282, 41%, 37%);
     background: var(--cd-color-event-1);
 }
 .cd-schedule__event [data-event="event-2"],
 .cd-schedule-modal[data-event="event-2"] .cd-schedule-modal__header-bg {
-    background: hsl(271, 25%, 42%);
+    background:  hsl(271, 23%, 26%);
     background: var(--cd-color-event-2);
 }
 .cd-schedule__event [data-event="event-3"],
@@ -3353,13 +3364,23 @@ a {
 }
 .cd-schedule__event [data-event="event-5"],
 .cd-schedule-modal[data-event="event-5"] .cd-schedule-modal__header-bg {
-    background: hsl(257, 32%, 31%);
+    background: hsl(256, 31%, 46%);
     background: var(--cd-color-event-5);
 }
 .cd-schedule__event [data-event="event-6"],
 .cd-schedule-modal[data-event="event-6"] .cd-schedule-modal__header-bg {
-    background: hsl(19, 37%, 45%);
+    background: hsl(234, 33%, 28%);
     background: var(--cd-color-event-6);
+}
+.cd-schedule__event [data-event="event-7"],
+.cd-schedule-modal[data-event="event-7"] .cd-schedule-modal__header-bg {
+    background: hsl(229, 52%, 36%);
+    background: var(--cd-color-event-7);
+}
+.cd-schedule__event [data-event="event-8"],
+.cd-schedule-modal[data-event="event-8"] .cd-schedule-modal__header-bg {
+    background: hsl(59, 42%, 24%);
+    background: var(--cd-color-event-8);
 }
 .cd-schedule-modal {
     position: fixed;

@@ -91,7 +91,7 @@ var mainRun = function (reload) {
 			var eventTop = slotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
 				eventHeight = slotHeight*duration/self.timelineUnitDuration;
 
-			this.singleEvents[i].setAttribute('style', 'top: '+(eventTop-1)+'px; height: '+(eventHeight +1)+'px');
+			this.singleEvents[i].setAttribute('style', 'top: '+(eventTop-1)+'px; height: '+(eventHeight+1)+'px;' +' font-size: ' +(((eventHeight)%100)+25)+'%;');
 		}
 
 		Util.removeClass(this.element, 'cd-schedule--loading');
@@ -409,43 +409,51 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
     var row = $this.closest('tr');
 	var reload = true;
     if (this.checked){
-        count++;
-        count = count%7;
-        $(this).closest('tr').each(function() {
-            var cells = $('td', this);
-            var trimmedmylist = $.trim('MYLIST'+cells.eq(0).text().replace(" ",""));
-            var trimmedcrn = $.trim('CRN'+cells.eq(0).text().replace(" ",""));
+        if (Object.keys(dict).length == 8){
+            $(this).prop('checked', false);
+            $("#myModal2").modal();
+        } else {
+            count++;
+            count = count%9;
+            if (count == 0) {
+                count++;
+            }
+            $(this).closest('tr').each(function() {
+                var cells = $('td', this);
+                var trimmedmylist = $.trim('MYLIST'+cells.eq(0).text().replace(" ",""));
+                var trimmedcrn = $.trim('CRN'+cells.eq(0).text().replace(" ",""));
 
-            var meetingTimes = ((($.trim(cells.eq(2).text()).replace(/^\s*[\r\n]/gm, '')).replace(/\n+/g, ',')).replace(/\s+/g, '')).split(',');
-            dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1];
-            if ($.isEmptyObject(findConflicts(dict))){
-                $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" checked><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
-                for(var i = 0; i < meetingTimes.length; i++) {
-                    var daytime = meetingTimes[i].split(/:(.+)/);
-                    var day = daytime[0];
-                    var time = daytime[1].split('-');
-                    var starttime = time[0]
-                    var endtime = time[1]
-                    var coursedata = (cells.eq(1).text()).split('-');
-                    var course = coursedata[coursedata.length-2]+'-'+coursedata[coursedata.length-1];
-                    $('#'+day).append('<li id="'+trimmedcrn+'" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
-                }
-             } else {
-                $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" ><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
-                for(var i = 0; i < meetingTimes.length; i++) {
-                    var daytime = meetingTimes[i].split(/:(.+)/);
-                    var day = daytime[0];
-                    var time = daytime[1].split('-');
-                    var starttime = time[0]
-                    var endtime = time[1]
-                    var coursedata = (cells.eq(1).text()).split('-');
-                    var course = coursedata[coursedata.length-2]+'-'+coursedata[coursedata.length-1];
-                    $('#'+day).append('<li id="'+trimmedcrn+'" hidden="true" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
-                }
-             }
-            mainRun(reload);
-            row.insertBefore( row.parent().find('tr:first-child') );
-        });
+                var meetingTimes = ((($.trim(cells.eq(2).text()).replace(/^\s*[\r\n]/gm, '')).replace(/\n+/g, ',')).replace(/\s+/g, '')).split(',');
+                dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1];
+                if ($.isEmptyObject(findConflicts(dict))){
+                    $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" checked><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
+                    for(var i = 0; i < meetingTimes.length; i++) {
+                        var daytime = meetingTimes[i].split(/:(.+)/);
+                        var day = daytime[0];
+                        var time = daytime[1].split('-');
+                        var starttime = time[0]
+                        var endtime = time[1]
+                        var coursedata = (cells.eq(1).text()).split('-');
+                        var course = coursedata[coursedata.length-2]+'-'+coursedata[coursedata.length-1];
+                        $('#'+day).append('<li id="'+trimmedcrn+'" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
+                    }
+                 } else {
+                    $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" ><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
+                    for(var i = 0; i < meetingTimes.length; i++) {
+                        var daytime = meetingTimes[i].split(/:(.+)/);
+                        var day = daytime[0];
+                        var time = daytime[1].split('-');
+                        var starttime = time[0]
+                        var endtime = time[1]
+                        var coursedata = (cells.eq(1).text()).split('-');
+                        var course = coursedata[coursedata.length-2]+'-'+coursedata[coursedata.length-1];
+                        $('#'+day).append('<li id="'+trimmedcrn+'" hidden="true" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
+                    }
+                 }
+                mainRun(reload);
+                row.insertBefore( row.parent().find('tr:first-child') );
+            });
+        };
     } else {
         $(this).closest('tr').each(function() {
             var cells = $('td', this);
@@ -491,9 +499,10 @@ $('#mycoursesbody').on('change', 'input', debounce(function() {
 	var id = this.id.replace(/\D/g,'');;
     if (this.checked){
         dict[(id.replace(/\s+/g, ''))][2] = 1;
-        if ($.isEmptyObject(findConflicts(dict))){
+        var conflict = findConflicts(dict);
+        console.log(conflict);
+        if ($.isEmptyObject(conflict)){
             console.log(findConflicts(dict));
-            console.log('tedstsdf');
             var attr = $('li[name="CRN'+id+'"]').attr('hidden');
             if (typeof attr !== typeof undefined && attr !== false) {
                 $('li[name="CRN'+id+'"]').removeAttr('hidden');
@@ -502,6 +511,14 @@ $('#mycoursesbody').on('change', 'input', debounce(function() {
         } else {
             if (this.checked){
                 $(this).trigger('click');
+                var days = "";
+                var courses = [];
+                for (var day in conflict){
+                    days += day;
+                }
+                conflict[days[0]].forEach(element => courses.push(element));
+                $("#modalData").html('Course cannot be displayed because of time conflict on weekday(s): <b>' + days + '</b><br><br>Between the courses:<br><b>' + courses[0] + '</b><br><b>' + courses[1] + '</b>');
+                $("#myModal").modal();
                 dict[(id.replace(/\s+/g, ''))][2] = 0;
             };
 
@@ -615,6 +632,5 @@ function findConflicts(courses) {
       }
     }
   }
-
   return conflictDict;
 }
