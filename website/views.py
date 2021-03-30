@@ -27,9 +27,10 @@ def home():
             query = client.query(kind="Courses")
             results = list(query.fetch())
             query = client.query(kind="UserCourses") #DOESNT WORK GRABS ALL USERS
+            my_key = client.key("UserCourses", session['userid'])
+            query.key_filter(my_key, '=')
             userlist = list(query.fetch())
             dictResults = eval(userlist[0]['MyClassList'])
-            print('ea')
             print(dictResults)
             return render_template('index.html', userid=session['userid'], name=session['name'], image=session['image'], courses=results, mylist=dictResults)
         else:
