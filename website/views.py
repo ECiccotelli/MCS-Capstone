@@ -10,7 +10,7 @@ views = Blueprint('views', __name__)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\mc-scheduleMaker-ee3731698260.json'
 client = datastore.Client()
 
-@views.route('/', methods = ['GET', 'POST'])
+@views.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         key = client.key('UserCourses', session['userid'])
@@ -37,10 +37,39 @@ def home():
             return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST
 
 
-@views.route('/registration')
+@views.route('/registration', methods=['GET', 'POST'])
 def registration():
-    print(session)
-    if 'authenticated' in session and session['authenticated']:
-        return render_template('table.html', userid=session['userid'], name=session['name'], image=session['image'])
+    if request.method == 'POST':
+        key = client.key('Users', session['userid'])
+        entity = datastore.Entity(key=key)
+        entity.update({
+            'firstname': request.form["first_name"],
+            'lastname': request.form["last_name"],
+            'campusID': request.form["campusID"],
+            'status': str(request.form.get("status")),
+            'programOfStudy1': request.form.get("poStudy1"),
+            'programOfStudy2': request.form.get("poStudy2"),
+            'programOfStudy3': request.form.get("poStudy3"),
+            'programOfStudy4': request.form.get("poStudy4"),
+            'programOfStudy5': request.form.get("poStudy5"),
+            'programOfStudy6': request.form.get("poStudy6"),
+            'major1': request.form["major1"],
+            'major2': request.form["major2"],
+            'minor1': request.form["minor1"],
+            'minor2': request.form["minor2"],
+            'semester': str(request.form.get("semester")),
+            'year': str(request.form.get("year")),
+            'advisorEmail': str(request.form.get("advEmail")),
+            'gradSem': str(request.form.get("gradSem")),
+            'gradYear': str(request.form.get("gradYear")),
+            'sign': request.form.get("formCheck-6")
+        })
+        client.put(entity)
+        print(entity)
+        return redirect(url_for('views.registration'))
     else:
-        return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST
+        print(session)
+        if 'authenticated' in session and session['authenticated']:
+            return render_template('table.html', userid=session['userid'], name=session['name'], image=session['image'])
+        else:
+            return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST

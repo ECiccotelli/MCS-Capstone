@@ -59,7 +59,7 @@
                         <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1" role="button">Autofill PDF Data</a>
                             <div class="collapse show" id="collapse-1">
                                 <div class="card-body">
-                                    <form>
+                                    <form method="post">
                                         <div class="form-row">
                                             <div class="col">
                                                 <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" id="first_name" name="first_name"></div>
@@ -72,44 +72,44 @@
                                             <div class="col">
                                                 <div class="form-group"><label for="campusID"><strong>Campus ID #</strong><br></label><input class="form-control" type="text" id="campusID" name="campusID"></div>
                                             </div>
-                                            <div class="col"><label><strong>Status</strong><br></label><select class="form-control"><option value="0"></option><option value="1">Freshman</option><option value="2">Sophomore</option><option value="3">Junior</option><option value="4">Senior</option><option value="5">Non-Matriculated</option></select></div>
+                                            <div class="col"><label><strong>Status</strong><br></label><select name="status" class="form-control"><option value="0"></option><option value="1">Freshman</option><option value="2">Sophomore</option><option value="3">Junior</option><option value="4">Senior</option><option value="5">Non-Matriculated</option></select></div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col">
                                                 <div class="form-group"><label><strong>Program of Study</strong><br></label>
                                                     <div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos1"><label class="custom-control-label" for="formCheck-Pos1">Arts</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos2"><label class="custom-control-label" for="formCheck-Pos2">Business</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos3"><label class="custom-control-label" for="formCheck-Pos3">Education</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos4"><label class="custom-control-label" for="formCheck-Pos4">Engineering</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos5"><label class="custom-control-label" for="formCheck-Pos5">Science</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos6"><label class="custom-control-label" for="formCheck-Pos6">SCPS</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos1" name="poStudy1"><label class="custom-control-label" for="formCheck-Pos1">Arts</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos2" name="poStudy2"><label class="custom-control-label" for="formCheck-Pos2">Business</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos3" name="poStudy3"><label class="custom-control-label" for="formCheck-Pos3">Education</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos4" name="poStudy4"><label class="custom-control-label" for="formCheck-Pos4">Engineering</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos5" name="poStudy5"><label class="custom-control-label" for="formCheck-Pos5">Science</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos6" name="poStudy6"><label class="custom-control-label" for="formCheck-Pos6">SCPS</label></div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col">
-                                                <div class="form-group"><label><strong>Major</strong><br></label><input class="form-control" type="text" name="major1"><input class="form-control" type="text" name="major2"></div>
-                                                <div class="form-group"><label><strong>Minor</strong><br></label><input class="form-control" type="text" name="minor1"><input class="form-control" type="text" name="minor2"></div>
+                                                <div class="form-group"><label><strong>Major</strong><br></label><input class="form-control" id="major1" type="text" name="major1"><input class="form-control" id="major2" type="text" name="major2"></div>
+                                                <div class="form-group"><label><strong>Minor</strong><br></label><input class="form-control" id="minor1" type="text" name="minor1"><input class="form-control" id="minor2" type="text" name="minor2"></div>
                                             </div>
                                         </div>
                                         <div class="form-group"><label><strong>Semester</strong><br></label>
                                             <div class="form-row">
-                                                <div class="col"><select class="form-control"><option value="" selected=""></option><option value="Fall">Fall</option><option value="Spring">Spring</option></select></div>
-                                                <div class="col"><select class="form-control"><option value="" selected=""></option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option></select></div>
+                                                <div class="col"><select name="semester" class="form-control"><option value="" selected=""></option><option value="Fall">Fall</option><option value="Spring">Spring</option></select></div>
+                                                <div class="col"><select name="year" class="form-control"><option value="" selected=""></option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option></select></div>
                                             </div>
                                         </div>
-                                        <div class="form-group"><label><strong>Advisor</strong><br></label><select class="form-control"><option value="12" selected="">This is item 1</option><option value="13">This is item 2</option><option value="14">This is item 3</option><option value="tina.tian@manhattan.edu">Tina Tian - [tina.tian@manhattan.edu]</option></select></div>
+                                        <div class="form-group"><label for="advisoremail"><strong>Advisor Email</strong><br></label><input class="form-control" type="text" id="advisoremail" name="advEmail"></div>
                                         <div
                                             class="form-group"><label><strong>Graduation</strong><br></label>
                                             <div class="form-row">
-                                                <div class="col"><select class="form-control"><option value="" selected=""></option><option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sept">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option></select></div>
+                                                <div class="col"><select name="gradSem" class="form-control"><option value="" selected=""></option><option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sept">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option></select></div>
                                                 <div
-                                                    class="col"><select class="form-control"><option value="" selected=""></option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option></select></div>
+                                                    class="col"><select name="gradYear" class="form-control"><option value="" selected=""></option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option></select></div>
                                 </div>
                             </div>
                             <div class="form-group"><label><strong>Signature Permission**</strong><br></label>
                                 <p class="m-0" style="font-style: italic;">Check the box below to allow us to create an automated signature of your full name for the registration form.&nbsp;</p>
-                                <div class="custom-control custom-checkbox" style="margin-top: 3px;"><input class="custom-control-input" type="checkbox" id="formCheck-6"><label class="custom-control-label" for="formCheck-2">Create an automated signature for me.</label></div>
+                                <div class="custom-control custom-checkbox" style="margin-top: 3px;"><input class="custom-control-input" type="checkbox" id="formCheck-6" name="formCheck-6"><label class="custom-control-label" for="formCheck-2">Create an automated signature for me.</label></div>
                             </div>
                             <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Data</button></div>
                             </form>

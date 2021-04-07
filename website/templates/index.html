@@ -9,6 +9,7 @@
     <script src="../static/js/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=ZQTPjKAD"></script>
     <link rel="stylesheet" href="static/css/styles.css">
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
@@ -80,6 +81,8 @@
                     </div>
                     </li>
                     </ul>
+                    <div class="d-none d-sm-block topbar-divider"></div>
+                    <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="tts"><label class="custom-control-label" for="tts"></label></div><i class="fa fa-wheelchair"></i>
             </div>
             </nav>
             <div class="container-fluid">
@@ -298,6 +301,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="../static/js/Table-With-Search.js"></script>
     <script src="../static/js/theme.js"></script>
+    <script>
+        $('#tts').on('change', function() {
+            if (this.checked){
+                $('span, a, th, td, p').mouseenter(function() {
+                  responsiveVoice.cancel();
+                  responsiveVoice.speak($(this).text());
+                });
+            } else {
+                location.reload();
+            };
+        });
+    </script>
 </body>
 
 </html>
