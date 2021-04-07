@@ -91,7 +91,12 @@ var mainRun = function (reload) {
 			var eventTop = slotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
 				eventHeight = slotHeight*duration/self.timelineUnitDuration;
 
-			this.singleEvents[i].setAttribute('style', 'top: '+(eventTop-1)+'px; height: '+(eventHeight+1)+'px;' +' font-size: ' +(((eventHeight)%100)+25)+'%;');
+            var f_size = (((eventHeight)%100)+20);
+			if (f_size > 100){
+				f_size = 100;
+			}
+			console.log(f_size)
+			this.singleEvents[i].setAttribute('style', 'top: '+(eventTop-1)+'px; height: '+(eventHeight+1)+'px;' +' font-size: ' +(f_size)+'%;');
 		}
 
 		Util.removeClass(this.element, 'cd-schedule--loading');
