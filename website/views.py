@@ -30,8 +30,11 @@ def home():
             my_key = client.key("UserCourses", session['userid'])
             query.key_filter(my_key, '=')
             userlist = list(query.fetch())
-            dictResults = eval(userlist[0]['MyClassList'])
-            print(dictResults)
+            try:
+                dictResults = eval(userlist[0]['MyClassList'])
+                print(dictResults)
+            except IndexError:
+                dictResults = {}
             return render_template('index.html', userid=session['userid'], name=session['name'], image=session['image'], courses=results, mylist=dictResults)
         else:
             return redirect(url_for('auth.login')) #ERROR or SIGN IN FIRST
