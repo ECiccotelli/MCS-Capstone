@@ -118,7 +118,7 @@ def registration():
     if dictResults == {}:
         cred = 0
         courses = 0
-        path = "./static/pdf/undergraduate_registration_form.pdf"
+        path = "./static/pdf/undergraduate_registration.pdf"
     else:
         name, cred, courses = pdf.run(dictResults)
         name = name.split('/')[-1]

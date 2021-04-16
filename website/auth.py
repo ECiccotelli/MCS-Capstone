@@ -11,13 +11,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'website\static\secret\mc-schedul
 auth = Blueprint('auth', __name__)
 
 #GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
-
-@auth.route('/login') #Page Route -- A prefix if any is listed in the init.py file
-def login():
-    if 'authenticated' in session and session['authenticated']:
-        return redirect(url_for('views.home'))
-    else:
-        return render_template('login.html')
+#if 'authenticated' in session and session['authenticated']:
 
 @auth.route('/login/callback', methods = ['POST'])
 def login_callback():
@@ -61,6 +55,6 @@ def login_callback():
 @auth.route('/logout') #Page Route -- A prefix if any is listed in the init.py file
 def logout():
     session.clear()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('views.home'))
 
 
