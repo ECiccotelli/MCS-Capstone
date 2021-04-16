@@ -462,7 +462,7 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
                  var myJSON = JSON.stringify({append: [crnnum, cells.eq(1).text(), meetingTimes, visible, credits]});
                 $.ajax({
                   type: 'POST',
-                  url: 'http://localhost:5000/h_update',
+                  url: 'http://mc-schedulemaker.uc.r.appspot.com/h_update',
                   // Always include an `X-Requested-With` header in every AJAX request,
                   // to protect against CSRF attacks.
                   headers: {
@@ -489,7 +489,7 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
             var myJSON = JSON.stringify({remove: id});
             $.ajax({
               type: 'POST',
-              url: 'http://localhost:5000/h_update',
+              url: 'http://mc-schedulemaker.uc.r.appspot.com/h_update',
               // Always include an `X-Requested-With` header in every AJAX request,
               // to protect against CSRF attacks.
               headers: {
