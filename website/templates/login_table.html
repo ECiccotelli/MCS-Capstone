@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Table - Brand</title>
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="static/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: #176939;">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/registration"><i class="fab fa-wpforms"></i><span>Registration</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="nav navbar-nav flex-nowrap ml-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="form-inline mr-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{name}}</span><img class="border rounded-circle img-profile" src={{image}}></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
+                                        <a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                    </div>
+                    </li>
+                    </ul>
+                    <div class="d-none d-sm-block topbar-divider"></div>
+                    <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="tts"><label class="custom-control-label" for="tts"></label></div><i class="fa fa-wheelchair"></i>
+            </div>
+            </nav>
+            <div class="container-fluid">
+                <h3 class="text-dark mb-4">Registration</h3>
+                <div class="row">
+                    <div class="col">
+                        <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1" role="button">Autofill PDF Data</a>
+                            <div class="collapse show" id="collapse-1">
+                                <div class="card-body">
+                                    <form method="post">
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" id="first_name" name="first_name" value="{{p_data[0]}}"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" id="last_name" name="last_name" value="{{p_data[1]}}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label for="campusID"><strong>Campus ID #</strong><br></label><input class="form-control" type="text" id="campusID" name="campusID" value="{{p_data[2]}}"></div>
+                                            </div>
+                                            <div class="col"><label><strong>Status</strong><br></label>
+                                                <select name="status" class="form-control">
+                                                    <option value="0"></option>
+                                                    <option value="1" {{"selected" if p_data[3]=="1"}}>Freshman</option>
+                                                    <option value="2" {{"selected" if p_data[3]=="2"}}>Sophomore</option>
+                                                    <option value="3" {{"selected" if p_data[3]=="3"}}>Junior</option>
+                                                    <option value="4" {{"selected" if p_data[3]=="4"}}>Senior</option>
+                                                    <option value="5" {{"selected" if p_data[3]=="5"}}>Non-Matriculated</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label><strong>Program of Study</strong><br></label>
+                                                    <div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos1" name="poStudy1" {{"checked" if p_data[4]=="on"}}><label class="custom-control-label" for="formCheck-Pos1">Arts</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos2" name="poStudy2" {{"checked" if p_data[5]=="on"}}><label class="custom-control-label" for="formCheck-Pos2">Business</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos3" name="poStudy3" {{"checked" if p_data[6]=="on"}}><label class="custom-control-label" for="formCheck-Pos3">Education</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos4" name="poStudy4" {{"checked" if p_data[7]=="on"}}><label class="custom-control-label" for="formCheck-Pos4">Engineering</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos5" name="poStudy5" {{"checked" if p_data[8]=="on"}}><label class="custom-control-label" for="formCheck-Pos5">Science</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos6" name="poStudy6" {{"checked" if p_data[9]=="on"}}><label class="custom-control-label" for="formCheck-Pos6">SCPS</label></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group"><label><strong>Major</strong><br></label><input class="form-control" id="major1" type="text" name="major1" value="{{p_data[10]}}"><input class="form-control" id="major2" type="text" name="major2" value="{{p_data[11]}}"></div>
+                                                <div class="form-group"><label><strong>Minor</strong><br></label><input class="form-control" id="minor1" type="text" name="minor1" value="{{p_data[12]}}"><input class="form-control" id="minor2" type="text" name="minor2" value="{{p_data[13]}}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"><label><strong>Semester</strong><br></label>
+                                            <div class="form-row">
+                                                <div class="col"><select name="semester" class="form-control"><option value="" selected=""></option><option value="Fall" {{"selected" if p_data[14]=="Fall"}}>Fall</option><option value="Spring" {{"selected" if p_data[14]=="Spring"}}>Spring</option></select></div>
+                                                <div class="col"><select name="year" class="form-control"><option value="" selected=""></option><option value="2021" {{"selected" if p_data[15]=="2021"}}>2021</option><option value="2022" {{"selected" if p_data[15]=="2022"}}>2022</option><option value="2023" {{"selected" if p_data[15]=="2023"}}>2023</option><option value="2024" {{"selected" if p_data[15]=="2024"}}>2024</option><option value="2025" {{"selected" if p_data[15]=="2025"}}>2025</option><option value="2026" {{"selected" if p_data[15]=="2026"}}>2026</option></select></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"><label for="advisoremail"><strong>Advisor Email</strong><br></label><input class="form-control" type="text" id="advisoremail" name="advEmail" value="{{p_data[16]}}"></div>
+                                        <div
+                                            class="form-group"><label><strong>Graduation</strong><br></label>
+                                            <div class="form-row">
+                                                <div class="col"><select name="gradSem" class="form-control">
+                                                    <option value="" selected=""></option>
+                                                    <option value="Jan" {{"selected" if p_data[17]=="Jan"}}>January</option>
+                                                    <option value="Feb" {{"selected" if p_data[17]=="Feb"}}>February</option>
+                                                    <option value="Mar" {{"selected" if p_data[17]=="Mar"}}>March</option>
+                                                    <option value="Apr" {{"selected" if p_data[17]=="Apr"}}>April</option>
+                                                    <option value="May" {{"selected" if p_data[17]=="May"}}>May</option>
+                                                    <option value="Jun" {{"selected" if p_data[17]=="Jun"}}>June</option>
+                                                    <option value="Jul" {{"selected" if p_data[17]=="Jul"}}>July</option>
+                                                    <option value="Aug" {{"selected" if p_data[17]=="Aug"}}>August</option>
+                                                    <option value="Sept" {{"selected" if p_data[17]=="Sept"}}>September</option>
+                                                    <option value="Oct" {{"selected" if p_data[17]=="Oct"}}>October</option>
+                                                    <option value="Nov" {{"selected" if p_data[17]=="Nov"}}>November</option>
+                                                    <option value="Dec" {{"selected" if p_data[17]=="Dec"}}>December</option>
+                                                </select>
+                                                </div>
+                                                <div
+                                                    class="col"><select name="gradYear" class="form-control"><option value="" selected=""></option><option value="2021" {{"selected" if p_data[18]=="2021"}}>2021</option><option value="2022" {{"selected" if p_data[18]=="2022"}}>2022</option><option value="2023" {{"selected" if p_data[18]=="2023"}}>2023</option><option value="2024" {{"selected" if p_data[18]=="2024"}}>2024</option><option value="2025" {{"selected" if p_data[18]=="2025"}}>2025</option><option value="2026" {{"selected" if p_data[18]=="2026"}}>2026</option></select></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label><strong>Signature Permission**</strong><br></label>
+                                <p class="m-0" style="font-style: italic;">Check the box below to allow us to create an automated signature of your full name for the registration form.&nbsp;</p>
+                                <div class="custom-control custom-checkbox" style="margin-top: 3px;"><input class="custom-control-input" type="checkbox" id="formCheck-6" name="formCheck-6"  {{"checked" if p_data[19]=="on"}}><label class="custom-control-label" for="formCheck-6">Create an automated signature for me.</label></div>
+                            </div>
+                            <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Data</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-4" href="#collapse-4" role="button">About Our Registration System</a>
+                    <div class="collapse show" id="collapse-4">
+                        <div class="card-body">
+                            <p class="m-0">This is a collapsable card rusing Bootstrap's built in collapse functionality.&nbsp;<strong>Click on the card header</strong>&nbsp;to see the card body collapse and expand!</p>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow border-left-warning py-2" style="margin-top: 20px;margin-bottom: 10px;">
+                                        <div class="card-body">
+                                            <div class="row align-items-center no-gutters">
+                                                <div class="col mr-2">
+                                                    <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Courses Selected</span></div>
+                                                    <div class="text-dark font-weight-bold h5 mb-0"><span>{{courses}}</span></div>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-book-open fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card shadow border-left-success py-2" style="margin-top: 20px;margin-bottom: 10px;">
+                                        <div class="card-body">
+                                            <div class="row align-items-center no-gutters">
+                                                <div class="col mr-2">
+                                                    <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Total Credits selected</span></div>
+                                                    <div class="text-dark font-weight-bold h5 mb-0"><span>{{cred}}</span></div>
+                                                </div>
+                                                <div class="col-auto"><i class="fas fa-chart-bar fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 font-weight-bold">Registration Form</p>
+            </div>
+            <div class="card-body" style="height:1120px;">
+                <object data="{{path}}" type="application/pdf" width="100%" height="100%"></object>
+            </div>
+        </div>
+    </div>
+    </div>
+    <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+            <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
+        </div>
+    </footer>
+    </div>
+    </div>
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/js/chart.min.js"></script>
+    <script src="static/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="static/js/theme.js"></script>
+</body>
+
+</html>

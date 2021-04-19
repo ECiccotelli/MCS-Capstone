@@ -425,16 +425,15 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
             }
             $(this).closest('tr').each(function() {
                 var cells = $('td', this);
-                var visible = 0
+
                 var credits = $.trim(cells.eq(4).text().replace(" ",""));
                 var trimmedmylist = $.trim('MYLIST'+cells.eq(0).text().replace(" ",""));
                 var trimmedcrn = $.trim('CRN'+cells.eq(0).text().replace(" ",""));
-                var crnnum =  $.trim(cells.eq(0).text().replace(" ",""));
+
                 var meetingTimes = ((($.trim(cells.eq(2).text()).replace(/^\s*[\r\n]/gm, '')).replace(/\n+/g, ',')).replace(/\s+/g, '')).split(',');
-                dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1];
+                dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1, credits];
                 if ($.isEmptyObject(findConflicts(dict))){
                     $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" checked><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
-                    visible = 1
                     for(var i = 0; i < meetingTimes.length; i++) {
                         var daytime = meetingTimes[i].split(/:(.+)/);
                         var day = daytime[0];
@@ -447,7 +446,6 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
                     }
                  } else {
                     $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" ><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
-                    visible = 0
                     for(var i = 0; i < meetingTimes.length; i++) {
                         var daytime = meetingTimes[i].split(/:(.+)/);
                         var day = daytime[0];
@@ -459,22 +457,7 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
                         $('#'+day).append('<li id="'+trimmedcrn+'" hidden="true" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
                     }
                  }
-                 var myJSON = JSON.stringify({append: [crnnum, cells.eq(1).text(), meetingTimes, visible, credits]});
-                $.ajax({
-                  type: 'POST',
-                  url: 'http://localhost:5000/h_update',
-                  // Always include an `X-Requested-With` header in every AJAX request,
-                  // to protect against CSRF attacks.
-                  headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                  },
-                  contentType: 'application/octet-stream; charset=utf-8',
-                  success: function(result) {
-                    console.log('added to session');
-                  },
-                  processData: false,
-                  data: myJSON
-                });
+
                 mainRun(reload);
                 row.insertBefore( row.parent().find('tr:first-child') );
             });
@@ -486,22 +469,6 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
             var id = cells.eq(0).text().replace(" ", "");
             $('#CRN'+id).remove();
             $('#MYLIST'+id).closest('tr').remove();
-            var myJSON = JSON.stringify({remove: id});
-            $.ajax({
-              type: 'POST',
-              url: 'http://localhost:5000/h_update',
-              // Always include an `X-Requested-With` header in every AJAX request,
-              // to protect against CSRF attacks.
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-              },
-              contentType: 'application/octet-stream; charset=utf-8',
-              success: function(result) {
-                console.log('added to session');
-              },
-              processData: false,
-              data: myJSON
-            });
 			mainRun(reload);
             row.insertAfter( row.parent().find('tr:last-child') );
         });

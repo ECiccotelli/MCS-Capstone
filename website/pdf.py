@@ -1,6 +1,8 @@
 import pdfrw
 import random
 import os
+from datetime import date
+
 # ***** MUST pip install pdfrw *****
 os.environ["PATH4PDF"] = 'website\\static\\pdf\\undergraduate_registration_form.pdf'
 # Map of PDF tags to the corresponding field name and data
@@ -12,19 +14,22 @@ x = {
     "'(2)'" : ['MAJOR_2', ""],
     "'(1_2)'" : ['MINOR_1', ""],
     "'(2_2)'" : ['MINOR_2', ""],
-    "'(Check Box1)'": ["FRESHMAN_CHECKBOX", ""],
-    "'(Check Box2)'": ["SOPHOMORE_CHECKBOX", ""],
-    "'(Check Box3)'": ["JUNIOR_CHECKBOX", ""],
-    "'(Check Box4)'": ["SENIOR_CHECKBOX", ""],
-    "'(Check Box5)'": ["NONMAT_CHECKBOX", ""],
-    "'(Check Box6)'": ["SPRING_CHECKBOX", ""],
-    "'(Check Box7)'": ["FALL_CHECKBOX", ""],
-    "'(Check Box10)'": ["ARTS_CHECKBOX", ""],
-    "'(Check Box11)'": ["BUSINESS_CHECKBOX", ""],
-    "'(Check Box12)'": ["EDUCATION_CHECKBOX", ""],
-    "'(Check Box13)'": ["ENGINEERING_CHECKBOX", ""],
+    "'(Month  Year)'" : ['GRADMONTH_YEAR',""],
+    "'(Check Box1)'": ["FRESHMAN_CHECKBOX", "1"],
+    "'(Check Box2)'": ["SOPHOMORE_CHECKBOX", "1"],
+    "'(Check Box3)'": ["JUNIOR_CHECKBOX", "1"],
+    "'(Check Box4)'": ["SENIOR_CHECKBOX", "1"],
+    "'(Check Box5)'": ["NONMAT_CHECKBOX", "1"],
+    "'(Check Box6)'": ["SPRING_CHECKBOX", "1"],
+    "'(Check Box7)'": ["FALL_CHECKBOX", "1"],
+    "'(Text8)'": ["FALL_SEMESTER_YEAR", ""],
+    "'(Text9)'": ["SPRING_SEMESTER_YEAR", ""],
+    "'(Check Box10)'": ["ARTS_CHECKBOX", "1"],
+    "'(Check Box11)'": ["BUSINESS_CHECKBOX", "1"],
+    "'(Check Box12)'": ["EDUCATION_CHECKBOX", "1"],
+    "'(Check Box13)'": ["ENGINEERING_CHECKBOX", "1"],
     "'(Check Box14)'": ["SCIENCE_CHECKBOX", "1"],
-    "'(Check Box15)'": ["SCPS_CHECKBOX", ""],
+    "'(Check Box15)'": ["SCPS_CHECKBOX", "1"],
     "'(CRN)'" : ['CRN_1', ""],
     "'(undefined)'" : ['CRN_2', ""],
     "'(undefined_5)'" : ['CRN_3', ""],
@@ -39,7 +44,7 @@ x = {
     "'(undefined_14)'" : ['DEPT_5', ""],
     "'(undefined_18)'" : ['DEPT_6', ""],
     "'(undefined_22)'" : ['DEPT_7', ""],
-    "'(Crs)'" : ['CRS_1', "150"],
+    "'(Crs)'" : ['CRS_1', ""],
     "'(undefined_3)'" : ['CRS_2', ""],
     "'(undefined_7)'" : ['CRS_3', ""],
     "'(undefined_11)'" : ['CRS_4', ""],
@@ -69,24 +74,60 @@ x = {
     "'(CrRow7)'" : ['CREDIT_7', ""],
     "'(Total Credits)'" : ['TOTAL_CREDITS', ""],
     "'(Student Signature)'" : 'STUDENT_SIGNATURE',
+    "'(Date)'": ['DATE', ""]
 }
 
 userInfoDict = x.copy()
 
-def fillPDF():
+def fillPDF(p_data, userInfoDict):
     num = random.randint(1000, 9999999999)
     exportname = 'website/static/pdf/undergraduate_reg_export-'+str(num)+'.pdf'
     template_pdf = pdfrw.PdfReader(os.getenv("PATH4PDF")) # Path to PDF form (local)
     annotations = template_pdf.pages[0]['/Annots']
     i = 0
     totalCreditCount = 0
-
+    today = date.today()
+    d1 = today.strftime("%m/%d/%Y")
+    #Text Data for Personal AutoFill
+    userInfoDict["'(Name)'"][1] = p_data[0]+' '+p_data[1]
+    userInfoDict["'(Campus ID)'"][1] = p_data[2]
+    userInfoDict["'(1)'"][1] = p_data[10]
+    userInfoDict["'(2)'"][1] = p_data[11]
+    userInfoDict["'(1_2)'"][1] = p_data[12]
+    userInfoDict["'(2_2)'"][1] = p_data[13]
+    if p_data[14] == 'Fall':
+        userInfoDict["'(Text8)'"][1] = p_data[15]
+    else:
+        userInfoDict["'(Text9)'"][1] = p_data[15]
+    userInfoDict["'(Month  Year)'"][1] = p_data[17]+' '+p_data[18]
+    userInfoDict["'(Date)'"][1] = d1
+    checkthisStudy = []
+    for i in range(4, 11):
+        if p_data[i] is not None:
+            num = i + 6
+            checkthisStudy.append(num)
     for annotation in annotations:
 
         pdfTag = repr(annotation['/T'])
         if pdfTag in x:
-            if "Check Box" in pdfTag and len(userInfoDict[pdfTag][1]) > 0:
-                annotation.update(pdfrw.PdfDict(V='{}'.format("Yes")))
+            if "Check Box" in pdfTag:
+                #Check box for grade
+                tempTag = "'(Check Box"+p_data[3]+")'"
+                if pdfTag == tempTag:
+                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                    continue
+
+                newtag = pdfTag.replace("Check Box", "")
+                if int(newtag.replace("'(","").replace(")'","")) in checkthisStudy:
+                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                    continue
+                if not userInfoDict["'(Text8)'"][1] and pdfTag == "'(Check Box6)'":
+                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                    continue
+                if not userInfoDict["'(Text9)'"][1] and pdfTag == "'(Check Box7)'":
+                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                    continue
+
 
             else:
                 if "Total Credits" in pdfTag:
@@ -100,17 +141,19 @@ def fillPDF():
                 entry = userInfoDict[repr(annotation['/T'])][1]
                 annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
 
-    pdfrw.PdfWriter().write(exportname, template_pdf) #
+    pdfrw.PdfWriter().write(exportname, template_pdf)
     return exportname, totalCreditCount
 
 def updateX(mylist, userInfoDict):
     tempArr = []
     count = 0
-    startIndex = 19
+    startIndex = 22
     for entry in mylist:
+        print(entry)
         info = mylist[entry]
-        if info[2] == 0:
-            break
+        print(info)
+        if int(info[2]) == 0:
+            continue
         count += 1
         ndcs = info[0].split('-')
         tempArr.append(entry)
@@ -128,16 +171,23 @@ def updateX(mylist, userInfoDict):
         for y in range(0,6):
             currentval = userInfoDict[list(userInfoDict)[startIndex]]
             currentval[1] = tempArr[y]
-            if startIndex >= 54:
-                startIndex-=34
+            if startIndex >= 56:
+                startIndex-=36
             else:
                 startIndex+=7
         tempArr = []
     return count
 
+
 def run(mylist):
-    #TOTAL 63 so = 0-62 index
+    p_data = []
     userInfoDict = x.copy()
     courses = updateX(mylist, userInfoDict)
-    exportdelname, cred = fillPDF()
+    exportdelname, cred = fillPDF(p_data, userInfoDict)
+    return exportdelname, cred, courses
+
+def runfull(mylist, p_data):
+    userInfoDict = x.copy()
+    courses = updateX(mylist, userInfoDict)
+    exportdelname, cred = fillPDF(p_data, userInfoDict)
     return exportdelname, cred, courses
