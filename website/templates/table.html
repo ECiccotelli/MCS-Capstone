@@ -4,7 +4,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <script>
+        function start() {
+          gapi.load('auth2', function() {
+            auth2 = gapi.auth2.init({
+              client_id: '278223618706-d5fg9uhluipegt7dr1hgjrvrs6i1j93n.apps.googleusercontent.com'
+              // Scopes to request in addition to 'profile' and 'email'
+              //scope: 'additional'
+            });
+          });
+        }
+    </script>
+    <title>Registration</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
     <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="static/fonts/fontawesome-all.min.css">
@@ -32,7 +45,7 @@
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <ul class="nav navbar-nav flex-nowrap ml-auto">
-                            <li class="nav-item dropdown no-arrow"><a class="btn btn-link btn-block text-white rubberBand animated btn-google" role="button" style="font-size: 11px;background: rgb(40,100,255);"><i class="fab fa-google"></i>&nbsp; &nbsp; Google Login</a></li>
+                            <li class="nav-item dropdown no-arrow"><a class="btn btn-link btn-block text-white rubberBand animated btn-google" role="button" id="signinButton" style="font-size: 11px;background: rgb(40,100,255);"><i class="fab fa-google"></i>&nbsp; &nbsp; Google Login</a></li>
                         </ul>
                         <div class="d-none d-sm-block topbar-divider"></div>
                         <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-4"><label class="custom-control-label" for="formCheck-1"></label></div><i class="fa fa-wheelchair"></i></div>
@@ -41,63 +54,10 @@
                 <h3 class="text-dark mb-4">Registration</h3>
                 <div class="row">
                     <div class="col">
-                        <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1" role="button">Autofill PDF Data</a>
+                        <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1" role="button">Autofill PDF (Google Login Required)</a>
                             <div class="collapse show" id="collapse-1">
                                 <div class="card-body">
-                                    <form method="post">
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" id="first_name" name="first_name"></div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" id="last_name" name="last_name"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <div class="form-group"><label for="campusID"><strong>Campus ID #</strong><br></label><input class="form-control" type="text" id="campusID" name="campusID"></div>
-                                            </div>
-                                            <div class="col"><label><strong>Status</strong><br></label><select name="status" class="form-control"><option value="0"></option><option value="1">Freshman</option><option value="2">Sophomore</option><option value="3">Junior</option><option value="4">Senior</option><option value="5">Non-Matriculated</option></select></div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="col">
-                                                <div class="form-group"><label><strong>Program of Study</strong><br></label>
-                                                    <div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos1" name="poStudy1"><label class="custom-control-label" for="formCheck-Pos1">Arts</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos2" name="poStudy2"><label class="custom-control-label" for="formCheck-Pos2">Business</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos3" name="poStudy3"><label class="custom-control-label" for="formCheck-Pos3">Education</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos4" name="poStudy4"><label class="custom-control-label" for="formCheck-Pos4">Engineering</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos5" name="poStudy5"><label class="custom-control-label" for="formCheck-Pos5">Science</label></div>
-                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos6" name="poStudy6"><label class="custom-control-label" for="formCheck-Pos6">SCPS</label></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group"><label><strong>Major</strong><br></label><input class="form-control" id="major1" type="text" name="major1"><input class="form-control" id="major2" type="text" name="major2"></div>
-                                                <div class="form-group"><label><strong>Minor</strong><br></label><input class="form-control" id="minor1" type="text" name="minor1"><input class="form-control" id="minor2" type="text" name="minor2"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group"><label><strong>Semester</strong><br></label>
-                                            <div class="form-row">
-                                                <div class="col"><select name="semester" class="form-control"><option value="" selected=""></option><option value="Fall">Fall</option><option value="Spring">Spring</option></select></div>
-                                                <div class="col"><select name="year" class="form-control"><option value="" selected=""></option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option></select></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group"><label for="advisoremail"><strong>Advisor Email</strong><br></label><input class="form-control" type="text" id="advisoremail" name="advEmail"></div>
-                                        <div
-                                            class="form-group"><label><strong>Graduation</strong><br></label>
-                                            <div class="form-row">
-                                                <div class="col"><select name="gradSem" class="form-control"><option value="" selected=""></option><option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option><option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option><option value="Jul">July</option><option value="Aug">August</option><option value="Sept">September</option><option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option></select></div>
-                                                <div
-                                                    class="col"><select name="gradYear" class="form-control"><option value="" selected=""></option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option></select></div>
-                                </div>
-                            </div>
-                            <div class="form-group"><label><strong>Signature Permission**</strong><br></label>
-                                <p class="m-0" style="font-style: italic;">Check the box below to allow us to create an automated signature of your full name for the registration form.&nbsp;</p>
-                                <div class="custom-control custom-checkbox" style="margin-top: 3px;"><input class="custom-control-input" type="checkbox" id="formCheck-6" name="formCheck-6"><label class="custom-control-label" for="formCheck-2">Create an automated signature for me.</label></div>
-                            </div>
-                            <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Data</button></div>
-                            </form>
+                                    <p class="m-0">This feature allows data other than your course information to be filled in the PDF form and also saved to our secure database. To use this feature please sign in with your Manhattan College Google Account.</p>
                         </div>
                     </div>
                 </div>
@@ -163,6 +123,45 @@
     <script src="static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="static/js/theme.js"></script>
+    <script>
+        $('#tts').on('change', function() {
+            if (this.checked){
+                location.reload();
+            } else {
+                location.reload();
+            };
+        });
+    </script>
+    <script>
+        $('#signinButton').click(function() {
+            auth2.grantOfflineAccess().then(signInCallback);
+        });
+    </script>
+    <script>
+        function signInCallback(authResult) {
+          if (authResult['code']) {
+
+            // Send the code to the server
+            $.ajax({
+              type: 'POST',
+              url: 'http://localhost:5000/login/callback',
+              // Always include an `X-Requested-With` header in every AJAX request,
+              // to protect against CSRF attacks.
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              contentType: 'application/octet-stream; charset=utf-8',
+              success: function(result) {
+                window.location.href = "/registration";
+              },
+              processData: false,
+              data: authResult['code']
+            });
+          } else {
+            // There was an error.
+          }
+        }
+    </script>
 </body>
 
 </html>

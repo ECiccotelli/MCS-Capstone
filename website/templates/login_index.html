@@ -5,19 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Dashboard</title>
-    <script>
-        function start() {
-          gapi.load('auth2', function() {
-            auth2 = gapi.auth2.init({
-              client_id: '278223618706-d5fg9uhluipegt7dr1hgjrvrs6i1j93n.apps.googleusercontent.com'
-              // Scopes to request in addition to 'profile' and 'email'
-              //scope: 'additional'
-            });
-          });
-        }
-    </script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
     <script>document.getElementsByTagName("html")[0].className += " js";</script>
     <script src="../static/js/jquery.min.js"></script>
     <link rel="stylesheet" href="static/css/styles.css">
@@ -74,14 +61,41 @@
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <ul class="nav navbar-nav flex-nowrap ml-auto">
-                            <li class="nav-item dropdown no-arrow"><a class="btn btn-link btn-block text-white rubberBand animated btn-google" role="button" id="signinButton" style="font-size: 11px;background: rgb(40,100,255);"><i class="fab fa-google"></i>&nbsp; &nbsp; Google Login</a></li>
-                        </ul>
-                        <div class="d-none d-sm-block topbar-divider"></div>
-                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-4"><label class="custom-control-label" for="formCheck-4"></label></div><i class="fa fa-wheelchair"></i></div>
-                </nav>
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="form-inline mr-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{name}}</span><img class="border rounded-circle img-profile" src={{image}}></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
+                                        <a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                    </div>
+                    </li>
+                    </ul>
+                    <div class="d-none d-sm-block topbar-divider"></div>
+                    <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="tts"><label class="custom-control-label" for="tts"></label></div><i class="fa fa-wheelchair"></i>
+            </div>
+            </nav>
             <div class="container-fluid">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
                     <h3 class="text-dark mb-0">Dashboard</h3>
+                    <span>
+                        <div class="row">
+                            <a id="saveSchedule" class="btn btn-success btn-icon-split" role="button">
+                                <span class="text-white text">Save Schedule</span>
+                            </a>
+                            <form method="post">
+                                <input type="hidden" id="listdata" name="mylistdata" value="">
+                                <input id="savingbuttoncss" class="btn btn-success btn-icon-split" type="submit" value="Save Schedule" hidden>
+                            </form>
+                        </div>
+                    </span>
                 </div>
                 <div class="row">
                     <div id="schedulecss" class="col-lg-7 col-xl-8">
@@ -275,7 +289,7 @@
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/js/util.js"></script>
-    <script src="../static/js/main.js"></script>
+    <script src="../static/js/maindatastore.js"></script>
     <script src="../static/js/chart.min.js"></script>
     <script src="../static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
@@ -290,36 +304,6 @@
                 location.reload();
             };
         });
-    </script>
-    <script>
-        $('#signinButton').click(function() {
-            auth2.grantOfflineAccess().then(signInCallback);
-        });
-    </script>
-    <script>
-        function signInCallback(authResult) {
-          if (authResult['code']) {
-
-            // Send the code to the server
-            $.ajax({
-              type: 'POST',
-              url: 'http://localhost:5000/login/callback',
-              // Always include an `X-Requested-With` header in every AJAX request,
-              // to protect against CSRF attacks.
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-              },
-              contentType: 'application/octet-stream; charset=utf-8',
-              success: function(result) {
-                window.location.href = "/";
-              },
-              processData: false,
-              data: authResult['code']
-            });
-          } else {
-            // There was an error.
-          }
-        }
     </script>
 </body>
 
