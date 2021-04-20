@@ -475,21 +475,6 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
     };
 });
 
-function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
-};
-
 $(document).ready(function() {
     $('input[id^=select]').each(function() {
         $(this).trigger('click');
@@ -500,7 +485,7 @@ $(document).ready(function() {
     });
 });
 
-$('#mycoursesbody').on('change', 'input', debounce(function() {
+$('#mycoursesbody').on('change', 'input', function() {
     var $this = $(this);
     console.log('disabled');
     $this.attr('disabled');
@@ -518,7 +503,21 @@ $('#mycoursesbody').on('change', 'input', debounce(function() {
             $('li[name="CRN'+id+'"]').show(500);
         } else {
             if (this.checked){
-                $(this).trigger('click');
+                $.ajax({
+                  type: 'POST',
+                  url: 'http://localhost:5000/spam',
+                  // Always include an `X-Requested-With` header in every AJAX request,
+                  // to protect against CSRF attacks.
+                  headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  contentType: 'application/octet-stream; charset=utf-8',
+                  success: function(result) {
+                    $this.trigger('click');
+                  },
+                  processData: false,
+                  data: ''
+                });
                 var days = "";
                 var courses = [];
                 for (var day in conflict){
@@ -527,6 +526,11 @@ $('#mycoursesbody').on('change', 'input', debounce(function() {
                 conflict[days[0]].forEach(element => courses.push(element));
                 $("#modalData").html('Course cannot be displayed because of time conflict on weekday(s): <b>' + days + '</b><br><br>Between the courses:<br><b>' + courses[0] + '</b><br><b>' + courses[1] + '</b>');
                 $("#myModal").modal();
+                $('#myModal').on('hidden.bs.modal', function () {
+                  if ($this.checked){
+                    $this.trigger('click');
+                  }
+                })
                 dict[(id.replace(/\s+/g, ''))][2] = 0;
             };
 
@@ -538,7 +542,7 @@ $('#mycoursesbody').on('change', 'input', debounce(function() {
 		});
 	};
     $this.removeAttr('disabled');
-}, 250));
+});
 
 $("#saveSchedule").click(function() {
   $("#listdata").attr("value", JSON.stringify(dict));

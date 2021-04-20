@@ -283,11 +283,13 @@
     <script src="../static/js/theme.js"></script>
     <script id="scriptvoice" src="https://code.responsivevoice.org/responsivevoice.js?key=ZQTPjKAD"></script>
     <script>
-        $('#tts').on('change', function() {
+        responsiveVoice.pause();
+        $('#formCheck-4').on('change', function() {
             if (this.checked){
-                location.reload();
+                responsiveVoice.resume();
             } else {
-                location.reload();
+                responsiveVoice.pause();
+                responsiveVoice.cancel();
             };
         });
     </script>
