@@ -4,7 +4,7 @@ from flask import Flask
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'MCS_secret'
-    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+    #app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
     from .views import views
     from .auth import auth
