@@ -2,9 +2,11 @@ import pdfrw
 import random
 import os
 from datetime import date
+import time
+import copy
 
 # ***** MUST pip install pdfrw *****
-os.environ["PATH4PDF"] = 'website\\static\\pdf\\undergraduate_registration_form.pdf'
+os.environ["PATH4PDF"] = 'website/static/pdf/undergraduate_registration_form.pdf'
 # Map of PDF tags to the corresponding field name and data
 # x = {PDF_TAG: [FIELD_NAME, DATASTORE_VALUE]}
 x = {
@@ -77,11 +79,10 @@ x = {
     "'(Date)'": ['DATE', ""]
 }
 
-userInfoDict = x.copy()
 
 def fillPDF(p_data, userInfoDict):
     num = random.randint(1000, 9999999999)
-    exportname = 'website/static/pdf/undergraduate_reg_export-'+str(num)+'.pdf'
+    exportname = 'website/static/pdf/undergraduate_reg_export-'+str(num)+str(time.time())+'.pdf'
     template_pdf = pdfrw.PdfReader(os.getenv("PATH4PDF")) # Path to PDF form (local)
     annotations = template_pdf.pages[0]['/Annots']
     i = 0
@@ -144,6 +145,35 @@ def fillPDF(p_data, userInfoDict):
     pdfrw.PdfWriter().write(exportname, template_pdf)
     return exportname, totalCreditCount
 
+def fillPDFsession(userInfoDict):
+    num = random.randint(1000, 9999999999)
+    exportname = 'website/static/pdf/undergraduate_reg_export-'+str(num)+str(time.time())+'.pdf'
+    template_pdf = pdfrw.PdfReader(os.getenv("PATH4PDF")) # Path to PDF form (local)
+    annotations = template_pdf.pages[0]['/Annots']
+    i = 0
+    totalCreditCount = 0
+
+    for annotation in annotations:
+
+        pdfTag = repr(annotation['/T'])
+        if pdfTag in x:
+            if "Check Box" in pdfTag:
+                pass
+            else:
+                if "Total Credits" in pdfTag:
+                    entry = str(totalCreditCount)
+                    annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
+                    continue
+                elif 'CrRow' in pdfTag and len(userInfoDict[pdfTag][1]) > 0:
+                    creditValue = int(userInfoDict[repr(annotation['/T'])][1])
+                    totalCreditCount += creditValue
+
+                entry = userInfoDict[repr(annotation['/T'])][1]
+                annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
+
+    pdfrw.PdfWriter().write(exportname, template_pdf)
+    return exportname, totalCreditCount
+
 def updateX(mylist, userInfoDict):
     tempArr = []
     count = 0
@@ -171,8 +201,8 @@ def updateX(mylist, userInfoDict):
         for y in range(0,6):
             currentval = userInfoDict[list(userInfoDict)[startIndex]]
             currentval[1] = tempArr[y]
-            if startIndex >= 56:
-                startIndex-=36
+            if startIndex >= 57:
+                startIndex-=34
             else:
                 startIndex+=7
         tempArr = []
@@ -180,14 +210,20 @@ def updateX(mylist, userInfoDict):
 
 
 def run(mylist):
-    p_data = []
-    userInfoDict = x.copy()
+    userInfoDict = copy.deepcopy(x)
+    print('Creation')
+    print(userInfoDict)
     courses = updateX(mylist, userInfoDict)
-    exportdelname, cred = fillPDF(p_data, userInfoDict)
+    exportdelname, cred = fillPDFsession(userInfoDict)
+    print('Modified')
+    print(userInfoDict)
     return exportdelname, cred, courses
 
 def runfull(mylist, p_data):
-    userInfoDict = x.copy()
+    userInfoDict = copy.deepcopy(x)
     courses = updateX(mylist, userInfoDict)
-    exportdelname, cred = fillPDF(p_data, userInfoDict)
+    if p_data == []:
+        exportdelname, cred = fillPDFsession(userInfoDict)
+    else:
+        exportdelname, cred = fillPDF(p_data, userInfoDict)
     return exportdelname, cred, courses

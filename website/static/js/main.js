@@ -508,21 +508,6 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
     };
 });
 
-function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
-};
-
 $(document).ready(function() {
     $('input[id^=select]').each(function() {
         $(this).trigger('click');
@@ -533,7 +518,7 @@ $(document).ready(function() {
     });
 });
 
-$('#mycoursesbody').on('change', 'input', debounce(function() {
+$('#mycoursesbody').on('change', 'input', function() {
     var $this = $(this);
     console.log('disabled');
     $this.attr('disabled');
@@ -548,10 +533,43 @@ $('#mycoursesbody').on('change', 'input', debounce(function() {
             if (typeof attr !== typeof undefined && attr !== false) {
                 $('li[name="CRN'+id+'"]').removeAttr('hidden');
             }
+            var myJSON = JSON.stringify({update: [id, 1]});
+            $.ajax({
+                  type: 'POST',
+                  url: 'http://localhost:5000/h_update',
+                  // Always include an `X-Requested-With` header in every AJAX request,
+                  // to protect against CSRF attacks.
+                  headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  contentType: 'application/octet-stream; charset=utf-8',
+                  success: function(result) {
+                    console.log('added to session');
+                  },
+                  processData: false,
+                  data: myJSON
+                });
             $('li[name="CRN'+id+'"]').show(500);
         } else {
             if (this.checked){
-                $(this).trigger('click');
+                that = this
+                var myJSON = JSON.stringify({update: [id, 0]});
+                $.ajax({
+                  type: 'POST',
+                  url: 'http://localhost:5000/h_update',
+                  // Always include an `X-Requested-With` header in every AJAX request,
+                  // to protect against CSRF attacks.
+                  headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  contentType: 'application/octet-stream; charset=utf-8',
+                  success: function(result) {
+                    $(that).trigger('click');
+                  },
+                  processData: false,
+                  data: myJSON
+                });
+
                 var days = "";
                 var courses = [];
                 for (var day in conflict){
@@ -566,12 +584,28 @@ $('#mycoursesbody').on('change', 'input', debounce(function() {
         };
 	} else {
         dict[(id.replace(/\s+/g, ''))][2] = 0;
+        var myJSON = JSON.stringify({update: [id, 0]});
+            $.ajax({
+                  type: 'POST',
+                  url: 'http://localhost:5000/h_update',
+                  // Always include an `X-Requested-With` header in every AJAX request,
+                  // to protect against CSRF attacks.
+                  headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  contentType: 'application/octet-stream; charset=utf-8',
+                  success: function(result) {
+                    console.log('added to session');
+                  },
+                  processData: false,
+                  data: myJSON
+                });
         $('li[name="CRN'+id+'"]').hide(500, function(){
 			$('li[name="CRN'+id+'"]').attr("hidden","true");
 		});
 	};
     $this.removeAttr('disabled');
-}, 250));
+});
 
 $("#saveSchedule").click(function() {
   $("#listdata").attr("value", JSON.stringify(dict));
