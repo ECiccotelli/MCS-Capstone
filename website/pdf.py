@@ -80,70 +80,99 @@ x = {
 }
 
 
-def fillPDF(p_data, userInfoDict):
-    num = random.randint(1000, 9999999999)
-    exportname = 'website/static/pdf/undergraduate_reg_export-'+str(num)+str(time.time())+'.pdf'
-    template_pdf = pdfrw.PdfReader(os.getenv("PATH4PDF")) # Path to PDF form (local)
-    annotations = template_pdf.pages[0]['/Annots']
-    i = 0
-    totalCreditCount = 0
-    today = date.today()
-    d1 = today.strftime("%m/%d/%Y")
-    #Text Data for Personal AutoFill
-    userInfoDict["'(Name)'"][1] = p_data[0]+' '+p_data[1]
-    userInfoDict["'(Campus ID)'"][1] = p_data[2]
-    userInfoDict["'(1)'"][1] = p_data[10]
-    userInfoDict["'(2)'"][1] = p_data[11]
-    userInfoDict["'(1_2)'"][1] = p_data[12]
-    userInfoDict["'(2_2)'"][1] = p_data[13]
-    if p_data[14] == 'Fall':
-        userInfoDict["'(Text8)'"][1] = p_data[15]
-    else:
-        userInfoDict["'(Text9)'"][1] = p_data[15]
-    userInfoDict["'(Month  Year)'"][1] = p_data[17]+' '+p_data[18]
-    userInfoDict["'(Date)'"][1] = d1
-    checkthisStudy = []
-    for i in range(4, 11):
-        if p_data[i] is not None:
-            num = i + 6
-            checkthisStudy.append(num)
-    for annotation in annotations:
+def fillPDF(p_data, userInfoDict, name):
+    if p_data != []:
+        namesave = name
+        exportname = 'website/static/pdf/undergraduate_reg_export-'+namesave+'.pdf'
+        template_pdf = pdfrw.PdfReader(os.getenv("PATH4PDF")) # Path to PDF form (local)
+        annotations = template_pdf.pages[0]['/Annots']
+        i = 0
+        totalCreditCount = 0
+        today = date.today()
+        d1 = today.strftime("%m/%d/%Y")
+        #Text Data for Personal AutoFill
+        userInfoDict["'(Name)'"][1] = p_data[0]+' '+p_data[1]
+        userInfoDict["'(Campus ID)'"][1] = p_data[2]
+        userInfoDict["'(1)'"][1] = p_data[10]
+        userInfoDict["'(2)'"][1] = p_data[11]
+        userInfoDict["'(1_2)'"][1] = p_data[12]
+        userInfoDict["'(2_2)'"][1] = p_data[13]
+        if p_data[14] == 'Fall':
+            userInfoDict["'(Text8)'"][1] = p_data[15]
+        else:
+            userInfoDict["'(Text9)'"][1] = p_data[15]
+        userInfoDict["'(Month  Year)'"][1] = p_data[17]+' '+p_data[18]
+        userInfoDict["'(Date)'"][1] = d1
+        checkthisStudy = []
+        for i in range(4, 11):
+            if p_data[i] is not None:
+                num = i + 6
+                checkthisStudy.append(num)
+        for annotation in annotations:
 
-        pdfTag = repr(annotation['/T'])
-        if pdfTag in x:
-            if "Check Box" in pdfTag:
-                #Check box for grade
-                tempTag = "'(Check Box"+p_data[3]+")'"
-                if pdfTag == tempTag:
-                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
-                    continue
+            pdfTag = repr(annotation['/T'])
+            if pdfTag in x:
+                if "Check Box" in pdfTag:
+                    #Check box for grade
+                    tempTag = "'(Check Box"+p_data[3]+")'"
+                    if pdfTag == tempTag:
+                        annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                        continue
 
-                newtag = pdfTag.replace("Check Box", "")
-                if int(newtag.replace("'(","").replace(")'","")) in checkthisStudy:
-                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
-                    continue
-                if not userInfoDict["'(Text8)'"][1] and pdfTag == "'(Check Box6)'":
-                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
-                    continue
-                if not userInfoDict["'(Text9)'"][1] and pdfTag == "'(Check Box7)'":
-                    annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
-                    continue
+                    newtag = pdfTag.replace("Check Box", "")
+                    if int(newtag.replace("'(","").replace(")'","")) in checkthisStudy:
+                        annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                        continue
+                    if not userInfoDict["'(Text8)'"][1] and pdfTag == "'(Check Box6)'":
+                        annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                        continue
+                    if not userInfoDict["'(Text9)'"][1] and pdfTag == "'(Check Box7)'":
+                        annotation.update(pdfrw.PdfDict(AS=pdfrw.PdfName('Yes')))
+                        continue
 
 
-            else:
-                if "Total Credits" in pdfTag:
-                    entry = str(totalCreditCount)
+                else:
+                    if "Total Credits" in pdfTag:
+                        entry = str(totalCreditCount)
+                        annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
+                        continue
+                    elif 'CrRow' in pdfTag and len(userInfoDict[pdfTag][1]) > 0:
+                        creditValue = int(userInfoDict[repr(annotation['/T'])][1])
+                        totalCreditCount += creditValue
+
+                    entry = userInfoDict[repr(annotation['/T'])][1]
                     annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
-                    continue
-                elif 'CrRow' in pdfTag and len(userInfoDict[pdfTag][1]) > 0:
-                    creditValue = int(userInfoDict[repr(annotation['/T'])][1])
-                    totalCreditCount += creditValue
 
-                entry = userInfoDict[repr(annotation['/T'])][1]
-                annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
+        pdfrw.PdfWriter().write(exportname, template_pdf)
+        return exportname, totalCreditCount
+    else:
+        namesave = name
+        exportname = 'website/static/pdf/undergraduate_reg_export-' + namesave + '.pdf'
+        template_pdf = pdfrw.PdfReader(os.getenv("PATH4PDF"))  # Path to PDF form (local)
+        annotations = template_pdf.pages[0]['/Annots']
+        i = 0
+        totalCreditCount = 0
 
-    pdfrw.PdfWriter().write(exportname, template_pdf)
-    return exportname, totalCreditCount
+        for annotation in annotations:
+
+            pdfTag = repr(annotation['/T'])
+            if pdfTag in x:
+                if "Check Box" in pdfTag:
+                    pass
+                else:
+                    if "Total Credits" in pdfTag:
+                        entry = str(totalCreditCount)
+                        annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
+                        continue
+                    elif 'CrRow' in pdfTag and len(userInfoDict[pdfTag][1]) > 0:
+                        creditValue = int(userInfoDict[repr(annotation['/T'])][1])
+                        totalCreditCount += creditValue
+
+                    entry = userInfoDict[repr(annotation['/T'])][1]
+                    annotation.update(pdfrw.PdfDict(AP=" ", V=entry))
+
+        pdfrw.PdfWriter().write(exportname, template_pdf)
+        return exportname, totalCreditCount
 
 def fillPDFsession(userInfoDict):
     num = random.randint(1000, 9999999999)
@@ -211,19 +240,12 @@ def updateX(mylist, userInfoDict):
 
 def run(mylist):
     userInfoDict = copy.deepcopy(x)
-    print('Creation')
-    print(userInfoDict)
     courses = updateX(mylist, userInfoDict)
     exportdelname, cred = fillPDFsession(userInfoDict)
-    print('Modified')
-    print(userInfoDict)
     return exportdelname, cred, courses
 
-def runfull(mylist, p_data):
+def runfull(mylist, p_data, name):
     userInfoDict = copy.deepcopy(x)
     courses = updateX(mylist, userInfoDict)
-    if p_data == []:
-        exportdelname, cred = fillPDFsession(userInfoDict)
-    else:
-        exportdelname, cred = fillPDF(p_data, userInfoDict)
+    exportdelname, cred = fillPDF(p_data, userInfoDict, name)
     return exportdelname, cred, courses

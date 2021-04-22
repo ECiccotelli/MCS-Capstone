@@ -4,25 +4,58 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Table - Brand</title>
+    <title>Registration</title>
+    <link rel="shortcut icon" href="static/images/mcs_ico.png">
     <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="static/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="static/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 </head>
 
 <body id="page-top">
+    <div id="myModalEmail" class="modal fade pulse animated" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Send Form to Advisor</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body">
+                    <p id="modalData"></p>
+                    <form id="email_form">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group"><label for="to"><strong>To:</strong></label><input class="form-control" type="text" id="to" name="to" value="{{p_data[16] if p_data[16] is not none else ''}}"></div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group"><label for="subject"><strong>Subject:</strong></label><input class="form-control" type="text" id="subject" name="subject" value="Registration Form"></div>
+                            </div>
+                        </div>
+                        <div class="form-group"><label for="bodymsg"><strong>Message Body:</strong></label><textarea class="form-control" id="bodymsg" name="bodymsg" rows="5"></textarea></div>
+                    </form>
+
+                    <div>
+                        <span><strong>Attached: </strong></span>
+                        <i class="fa fa-file-pdf-o"></i>
+                        <span>Registration_Form.pdf</span>
+
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-success" id="save_drafts" data-dismiss="modal" type="button">Save to my Drafts</button><button class="btn btn-primary" id="send_email" data-dismiss="modal" type="button">Email my Advisor</button></div>
+            </div>
+        </div>
+    </div>
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: #176939;">
             <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
+                    <div class="sidebar-brand-icon"><img src="static/images/mcs_ico.png" style="width: 46px;" /></div>
+                    <div class="sidebar-brand-text mx-3"><span class="text-capitalize" style="font-size: 17px;">MC Scheduler</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link active" href="/registration"><i class="fab fa-wpforms"></i><span>Registration</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/help"><i class="fas fa-info-circle"></i><span>FAQs / Help</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -53,6 +86,38 @@
                     <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="tts"><label class="custom-control-label" for="tts"></label></div><i class="fa fa-wheelchair"></i>
             </div>
             </nav>
+            <div class="container-fluid">
+                {% with messages = get_flashed_messages(with_categories=true)%}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            {% if category == 'success' %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+                            {% if category == 'save' %}
+                                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+                            {% if category == 'error' %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
             <div class="container-fluid">
                 <h3 class="text-dark mb-4">Registration</h3>
                 <div class="row">
@@ -182,10 +247,17 @@
         </div>
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-primary m-0 font-weight-bold">Registration Form</p>
+                <div class="row">
+                    <div class="col">
+                        <p class="text-primary m-0 font-weight-bold">Registration Form</p>
+                    </div>
+                    <div class="col text-right">
+                        <a style="align-items: right;" id="emailAdvis" class="btn btn-primary btn-icon-split" role="button"><span class="text-white text">Send Form to Advisor</span></a>
+                    </div>
+                </div>
             </div>
             <div class="card-body" style="height:1120px;">
-                <object data="{{path}}" type="application/pdf" width="100%" height="100%"></object>
+                <object id="pdf_object" data="{{path}}" type="application/pdf" width="100%" height="100%"></object>
             </div>
         </div>
     </div>
@@ -203,6 +275,7 @@
     <script src="static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="static/js/theme.js"></script>
+    <script src="static/js/convertPDF.js"></script>
 </body>
 
 </html>
