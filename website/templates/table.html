@@ -100,7 +100,12 @@
                 <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-4" href="#collapse-4" role="button">About Our Registration System</a>
                     <div class="collapse show" id="collapse-4">
                         <div class="card-body">
-                            <p class="m-0">This is a collapsable card rusing Bootstrap's built in collapse functionality.&nbsp;<strong>Click on the card header</strong>&nbsp;to see the card body collapse and expand!</p>
+                            <p class="m-0">On this Registration Tab as long as you have selected your classes previously
+                                in the Dashboard Tab and <strong>saved</strong>, they will auto fill into the PDF registration document. You have the
+                                ability to set up auto fill for other personal data. You also have the ability where the website can place a
+                                generated signature the document with your permission.
+                                Finally we provide you the ability to email it to your advisor or save the email as a draft
+                                in your Manhattan College Gmail Account.</p>
                             <div class="row">
                                 <div class="col">
                                     <div class="card shadow border-left-warning py-2" style="margin-top: 20px;margin-bottom: 10px;">
@@ -146,7 +151,7 @@
     </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
+            <div class="text-center my-auto copyright"><span></span></div>
         </div>
     </footer>
     </div>
@@ -157,10 +162,15 @@
     <script src="static/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="static/js/theme.js"></script>
+    <script id="scriptvoice" src="https://code.responsivevoice.org/responsivevoice.js?key=HO4pGd5I"></script>
     <script>
-        $('#tts').on('change', function() {
+        $('#formCheck-4').on('change', function() {
             if (this.checked){
-                location.reload();
+                $('th, h3, span, a, td, input, p').mouseenter(function() {
+                    console.log(this);
+                    responsiveVoice.cancel();
+                    responsiveVoice.speak($(this).text());
+                });
             } else {
                 location.reload();
             };

@@ -32,6 +32,18 @@
 </head>
 
 <body id="page-top">
+    <div id="myModal3" class="modal fade rubberBand animated" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Course Section Conflict</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body">
+                    <p id="modalData2"></p>
+                </div>
+                <div class="modal-footer"><button class="btn btn-primary" data-dismiss="modal" type="button">Ok</button></div>
+            </div>
+        </div>
+    </div>
     <div id="myModal" class="modal fade rubberBand animated" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -304,7 +316,7 @@
             </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
+            <div class="text-center my-auto copyright"><span></span></div>
         </div>
     </footer>
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
@@ -316,15 +328,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="../static/js/Table-With-Search.js"></script>
     <script src="../static/js/theme.js"></script>
-    <script id="scriptvoice" src="https://code.responsivevoice.org/responsivevoice.js?key=ZQTPjKAD"></script>
+    <script id="scriptvoice" src="https://code.responsivevoice.org/responsivevoice.js?key=HO4pGd5I"></script>
     <script>
-        responsiveVoice.pause();
         $('#formCheck-4').on('change', function() {
             if (this.checked){
-                responsiveVoice.resume();
+                $('th, h3, span, a, td, input, p').mouseenter(function() {
+                    console.log(this);
+                    responsiveVoice.cancel();
+                    responsiveVoice.speak($(this).text());
+                });
             } else {
-                responsiveVoice.pause();
-                responsiveVoice.cancel();
+                location.reload();
             };
         });
     </script>

@@ -16,7 +16,7 @@ $("#save_drafts").click(function() {
           },
           contentType: 'application/octet-stream; charset=utf-8',
           success: function(result) {
-            console.log('added to session');
+            $("#myModalDrafts").modal();
           },
           processData: false,
           data: myJSON
@@ -36,7 +36,7 @@ $("#send_email").click(function() {
           },
           contentType: 'application/octet-stream; charset=utf-8',
           success: function(result) {
-            console.log('added to session');
+            $("#myModalSent").modal();
           },
           processData: false,
           data: myJSON
