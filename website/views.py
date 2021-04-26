@@ -118,7 +118,6 @@ def email():
         pdf_path = 'website/static/pdf/undergraduate_reg_export-' + fullname_addon + '.pdf'
         msg_w_pdf = create_message_with_attachment(sender, to, subject, message_text, pdf_path)
         send_message(service, 'me', msg_w_pdf)
-        flash("Registration Form Sent. Check Sent Folder in Gmail for Confirmation.", "success")
         return '', 204
     elif (list(data_json)[0]) == 'draft':
         print('here')
@@ -139,7 +138,6 @@ def email():
         pdf_path = 'website/static/pdf/undergraduate_reg_export-' + fullname_addon + '.pdf'
         msg_w_pdf = create_message_with_attachment(sender, to, subject, message_text, pdf_path)
         create_draft(service, 'me', msg_w_pdf)
-        flash("Registration Form Saved as Email Draft. Check Drafts Folder in Gmail.", "save")
         return '', 204
 
 

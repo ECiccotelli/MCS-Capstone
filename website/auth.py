@@ -66,6 +66,7 @@ def login_callback():
 @auth.route('/logout') #Page Route -- A prefix if any is listed in the init.py file
 def logout():
     session.clear()
+    flash("Logout Successful", "success")
     return redirect(url_for('views.home'))
 
 

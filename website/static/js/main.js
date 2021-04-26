@@ -432,7 +432,7 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
                 var crnnum =  $.trim(cells.eq(0).text().replace(" ",""));
                 var meetingTimes = ((($.trim(cells.eq(2).text()).replace(/^\s*[\r\n]/gm, '')).replace(/\n+/g, ',')).replace(/\s+/g, '')).split(',');
                 dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1];
-                if ($.isEmptyObject(findConflicts(dict))){
+                if ($.isEmptyObject(findConflicts(dict)) && $.isEmptyObject(findDuplicateCourses(dict))){
                     $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" checked><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
                     visible = 1
                     for(var i = 0; i < meetingTimes.length; i++) {
@@ -526,9 +526,20 @@ $('#mycoursesbody').on('change', 'input', function() {
     if (this.checked){
         dict[(id.replace(/\s+/g, ''))][2] = 1;
         var conflict = findConflicts(dict);
+        var course_conflict = findDuplicateCourses(dict);
         console.log(conflict);
-        if ($.isEmptyObject(conflict)){
-            console.log(findConflicts(dict));
+        console.log(course_conflict);
+        var c = Object.values(conflict)
+        var cc = Object.values(course_conflict)[0]
+        if (cc != undefined){
+            cc = Object.values(course_conflict)[0][0]
+        }
+        console.log(Object.keys(course_conflict)[0]);
+        console.log(dict[(id.replace(/\s+/g, ''))][0]);
+        console.log(!(dict[(id.replace(/\s+/g, ''))][0].includes(Object.keys(course_conflict)[0])));
+        console.log(!(dict[(id.replace(/\s+/g, ''))][0].includes(cc)));
+        if ($.isEmptyObject(conflict) && $.isEmptyObject(course_conflict)){
+            console.log('NO CONFLICT');
             var attr = $('li[name="CRN'+id+'"]').attr('hidden');
             if (typeof attr !== typeof undefined && attr !== false) {
                 $('li[name="CRN'+id+'"]').removeAttr('hidden');
@@ -551,8 +562,17 @@ $('#mycoursesbody').on('change', 'input', function() {
                 });
             $('li[name="CRN'+id+'"]').show(500);
         } else {
+            console.log('CONFLICT');
             if (this.checked){
-                that = this
+                that = this;
+                switched = -1;
+                if ($.isEmptyObject(course_conflict)){
+                    switched = 1;
+                }
+                else {
+                    switched = 0;
+                };
+                console.log(switched)
                 var myJSON = JSON.stringify({update: [id, 0]});
                 $.ajax({
                   type: 'POST',
@@ -569,16 +589,31 @@ $('#mycoursesbody').on('change', 'input', function() {
                   processData: false,
                   data: myJSON
                 });
-
-                var days = "";
-                var courses = [];
-                for (var day in conflict){
-                    days += day;
+                if (switched == 1){
+                    var days = "";
+                    var courses = [];
+                    for (var day in conflict){
+                        days += day;
+                    }
+                    console.log('THIS IS CONFLICT')
+                    console.log(conflict);
+                    console.log(days);
+                    console.log(days[0]);
+                    conflict[days[0]].forEach(element => courses.push(element));
+                    $("#modalData").html('Course cannot be displayed because of time conflict on weekday(s): <b>' + days + '</b><br><br>Between the courses:<br><b>' + courses[0] + '</b><br><b>' + courses[1] + '</b>');
+                    $("#myModal").modal();
+                    dict[(id.replace(/\s+/g, ''))][2] = 0;
                 }
-                conflict[days[0]].forEach(element => courses.push(element));
-                $("#modalData").html('Course cannot be displayed because of time conflict on weekday(s): <b>' + days + '</b><br><br>Between the courses:<br><b>' + courses[0] + '</b><br><b>' + courses[1] + '</b>');
-                $("#myModal").modal();
-                dict[(id.replace(/\s+/g, ''))][2] = 0;
+                else if (switched == 0) {
+                    var coursename_con = Object.keys(course_conflict)[0];
+                    var courses_con = [];
+                    console.log(Object.keys(course_conflict)[0]);
+                    console.log(course_conflict);
+                    course_conflict[coursename_con].forEach(element => courses_con.push(element));
+                    $("#modalData2").html('Course cannot be displayed because you have already selected this course with different section: <br><br><b>' + coursename_con + '</b>');
+                    $("#myModal3").modal();
+                    dict[(id.replace(/\s+/g, ''))][2] = 0;
+                }
             };
 
         };
@@ -693,4 +728,46 @@ function findConflicts(courses) {
     }
   }
   return conflictDict;
+}
+
+function findDuplicateCourses(courses) {
+
+  var courseCounts = {};
+
+  /*
+  Loop to count the number of occurences for each course (adds to dictionary)
+
+  Format: courseCounts[TITLE & COURSE NUMBER] = [COUNT, [CRNs]]
+  */
+
+  for (let crn in courses) {
+
+    var courseInfo = courses[crn];
+    var courseTitle = courseInfo[0];
+    courseTitle = courseTitle.split(" - ", 2);
+    var key = courseTitle[0] + " - " + courseTitle[1];
+
+    if (key in courseCounts) {
+      courseCounts[key][0] += 1;
+      courseCounts[key][1].push(crn);
+    } else {
+      courseCounts[key] = [1, [crn]];
+    }
+
+  }
+  console.log(courseCounts);
+  /*
+  Add courses to Duplicate dictionary of count is greater than 1.
+  Format: duplicates[TITLE & COURSE NUMBER] = [CRN's]
+   */
+  var duplicates = {};
+  for (var [title, crns] of Object.entries(courseCounts)) {
+
+    var courseCount = crns[0];
+    if (courseCount > 1) {
+      duplicates[title] = crns[1];
+    }
+  }
+
+  return duplicates;
 }

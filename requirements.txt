@@ -1,5 +1,8 @@
 Flask==1.1.2
-google-cloud-datastore==2.1.0
-gunicorn==20.0.4
+google-cloud-datastore==2.1.1
+gunicorn==20.1.0
 oauth2client==4.1.3
 gcloud==0.18.3
+pdfrw~=0.4
+google-api-python-client~=2.2.0
+reportlab~=3.5.67

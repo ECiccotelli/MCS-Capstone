@@ -44,6 +44,32 @@
             </div>
         </div>
     </div>
+    <div id="myModalDrafts" class="modal fade pulse animated" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Successfully Saved to Drafts</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body">
+                    <p id="modalDatainfo">Registration Form Successfully <strong>Saved as Email Draft</strong>.</p>
+                    <p id="checkdraft">Check Drafts Folder in Manhattan College Gmail Account to Verify.</p>
+                </div>
+                <div class="modal-footer"><button class="btn btn-success" id="save_success" data-dismiss="modal" type="button">Dismiss</button></div>
+            </div>
+        </div>
+    </div>
+    <div id="myModalSent" class="modal fade pulse animated" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Successfully Sent</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                <div class="modal-body">
+                    <p id="modalDatasentinfo">Registration Form Successfully <strong>Sent to Advisor</strong>.</p>
+                    <p id="checksent">Check Sent Folder in Manhattan College Gmail Account for Confirmation.</p>
+                </div>
+                <div class="modal-footer"><button class="btn btn-primary" id="sent_success" data-dismiss="modal" type="button">Dismiss</button></div>
+            </div>
+        </div>
+    </div>
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: #176939;">
             <div class="container-fluid d-flex flex-column p-0">
@@ -83,7 +109,7 @@
                     </li>
                     </ul>
                     <div class="d-none d-sm-block topbar-divider"></div>
-                    <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="tts"><label class="custom-control-label" for="tts"></label></div><i class="fa fa-wheelchair"></i>
+                    <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-4"><label class="custom-control-label" for="formCheck-4"></label></div><i class="fa fa-wheelchair"></i>
             </div>
             </nav>
             <div class="container-fluid">
@@ -211,7 +237,12 @@
                 <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-4" href="#collapse-4" role="button">About Our Registration System</a>
                     <div class="collapse show" id="collapse-4">
                         <div class="card-body">
-                            <p class="m-0">This is a collapsable card rusing Bootstrap's built in collapse functionality.&nbsp;<strong>Click on the card header</strong>&nbsp;to see the card body collapse and expand!</p>
+                            <p class="m-0">On this Registration Tab as long as you have selected your classes previously
+                                in the Dashboard Tab, they will auto fill into the PDF registration document. <strong>If you are
+                                signed in</strong> you will have the ability to set up auto fill for other personal data. You will
+                                also have the ability where the website can place a generated signature the document with your permission.
+                                Finally we provide you the ability to email it to your advisor or save the email as a draft
+                                in your Manhattan College Gmail Account.</p>
                             <div class="row">
                                 <div class="col">
                                     <div class="card shadow border-left-warning py-2" style="margin-top: 20px;margin-bottom: 10px;">
@@ -264,7 +295,7 @@
     </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
+            <div class="text-center my-auto copyright"><span></span></div>
         </div>
     </footer>
     </div>
@@ -276,6 +307,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="static/js/theme.js"></script>
     <script src="static/js/convertPDF.js"></script>
+    <script id="scriptvoice" src="https://code.responsivevoice.org/responsivevoice.js?key=HO4pGd5I"></script>
+    <script>
+        $('#formCheck-4').on('change', function() {
+            if (this.checked){
+                $('th, h3, span, a, td, input, p').mouseenter(function() {
+                    console.log(this);
+                    responsiveVoice.cancel();
+                    responsiveVoice.speak($(this).text());
+                });
+            } else {
+                location.reload();
+            };
+        });
+    </script>
 </body>
 
 </html>
