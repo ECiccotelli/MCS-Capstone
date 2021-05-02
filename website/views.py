@@ -1,5 +1,6 @@
 import base64
 import mimetypes
+import random
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -65,9 +66,9 @@ def home():
         results = list(query.fetch())
         try:
             dictResults = session['mylist']
-            print(dictResults)
         except KeyError:
             dictResults = {}
+        print(dictResults)
         return render_template('index.html', courses=results, mylist=dictResults)
 
 @views.route('/help', methods=['GET'])
@@ -83,11 +84,15 @@ def home_update():
         #session['mylist'][list(newjs_on)[0]] = request.get_data().decode("utf-8")
     if (list(newjs_on)[0]) == 'append':
         data = newjs_on[(list(newjs_on)[0])]
-        (session['mylist'])[(data[0])] = [data[1], data[2], data[3], data[4]]
+        (session['mylist'])[(data[0])] = [data[1], data[2], data[3], data[4], data[5]]
         session.modified = True
     elif (list(newjs_on)[0]) == 'update':
         data = newjs_on[(list(newjs_on)[0])]
         (session['mylist'])[(data[0])][2] = data[1]
+        session.modified = True
+    elif (list(newjs_on)[0]) == 'update_alt':
+        data = newjs_on[(list(newjs_on)[0])]
+        (session['mylist'])[(data[0])][4] = data[1]
         session.modified = True
     else:
         data = newjs_on['remove']
@@ -215,32 +220,74 @@ def registration():
                     spdf.run(fullp_name, delpath)
             return render_template('login_table.html', userid=session['userid'], name=session['name'], image=session['image'], cred=cred, courses=courses, path=path, p_data=p_data)
     else:
+        num = random.randint(1000, 9999999999)
+        randpart = str(num) + str(time.time())
         try:
-            dictResults = session['mylist']
-            print(dictResults)
+            temp_name = session['pdf_name']
+            print(temp_name)
         except KeyError:
-            dictResults = {}
-        if dictResults == {}:
-            cred = 0
-            courses = 0
-            path = "./static/pdf/undergraduate_registration_form_latest.pdf?v=" + str(time.time())
+            name = 'undergraduate_reg_export-' + randpart + '.pdf'
+            session['pdf_name'] = name
+            session['pdf_end'] = randpart
+        if request.method == 'POST':
+            session['data'] = [
+                request.form["first_name"],
+                request.form["last_name"],
+                request.form["campusID"],
+                str(request.form.get("status")),
+                request.form.get("poStudy1"),
+                request.form.get("poStudy2"),
+                request.form.get("poStudy3"),
+                request.form.get("poStudy4"),
+                request.form.get("poStudy5"),
+                request.form.get("poStudy6"),
+                request.form["major1"],
+                request.form["major2"],
+                request.form["minor1"],
+                request.form["minor2"],
+                str(request.form.get("semester")),
+                str(request.form.get("year")),
+                '',
+                str(request.form.get("gradSem")),
+                str(request.form.get("gradYear")),
+                request.form.get("formCheck-6")
+            ]
+            return redirect(url_for('views.registration'))
         else:
-            name, cred, courses = pdf.run(dictResults)
-            name = name.split('/')[-1]
-            path = './static/pdf/'+name
-            delpath = 'website/static/pdf/'+name
-            del_thread = threading.Thread(target=delay_delete, args=(5, delpath))
-            del_thread.start()
-        return render_template('table.html', path=path, cred=cred, courses=courses)
+            try:
+                dictResults = session['mylist']
+                print(dictResults)
+            except KeyError:
+                dictResults = {}
+            try:
+                data = session['data']
+                print(data)
+            except (IndexError, KeyError) as keyindex:
+                data = []
+            if dictResults == {}:
+                cred = 0
+                courses = 0
+                path = "./static/pdf/undergraduate_registration_form_latest.pdf?v=" + str(time.time())
+            else:
+                name, cred, courses = pdf.runfull(dictResults, data, session['pdf_end'])
+                name = name.split('/')[-1]
+                path = './static/pdf/'+name+"?v=" + str(time.time())
+
+                delpath = 'website/static/pdf/'+name
+                #DELETE ON SESSION EMPTY
+                #del_thread = threading.Thread(target=delay_delete, args=(5, delpath))
+                #del_thread.start()
+                delpathname = 'website/static/pdf/' + session['pdf_name']
+                if data != [] and data[18] is not None:
+                    fullname = data[0]+" "+data[1]
+                    spdf.run(fullname, delpathname)
+            return render_template('table.html', path=path, cred=cred, courses=courses, p_data=data)
 
 
 
 def delay_delete(delay, path):
-    print("started")
     time.sleep(delay)
-    print("trying to delete")
     os.remove(path)
-    print("done")
     return
 
 def create_message_with_attachment(sender, to, subject, message_text, file):
@@ -292,7 +339,7 @@ def send_message(service, user_id, message):
     Returns:
     Sent Message.
     """
-    print(message)
+
     #message['raw'] = message['raw'].decode()
     #print(message)
     print('hello')

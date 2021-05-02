@@ -95,7 +95,6 @@ var mainRun = function (reload) {
 			if (f_size > 100){
 				f_size = 100;
 			}
-			console.log(f_size)
 			this.singleEvents[i].setAttribute('style', 'top: '+(eventTop-1)+'px; height: '+(eventHeight+1)+'px;' +' font-size: ' +(f_size)+'%;');
 		}
 
@@ -425,15 +424,41 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
             }
             $(this).closest('tr').each(function() {
                 var cells = $('td', this);
-                var visible = 0
+                var visible = 0;
                 var credits = $.trim(cells.eq(4).text().replace(" ",""));
+                var id = cells.eq(0).text().replace(" ","");
                 var trimmedmylist = $.trim('MYLIST'+cells.eq(0).text().replace(" ",""));
                 var trimmedcrn = $.trim('CRN'+cells.eq(0).text().replace(" ",""));
                 var crnnum =  $.trim(cells.eq(0).text().replace(" ",""));
                 var meetingTimes = ((($.trim(cells.eq(2).text()).replace(/^\s*[\r\n]/gm, '')).replace(/\n+/g, ',')).replace(/\s+/g, '')).split(',');
-                dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1];
-                if ($.isEmptyObject(findConflicts(dict)) && $.isEmptyObject(findDuplicateCourses(dict))){
-                    $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" checked><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
+                dict[(cells.eq(0).text().replace(/\s+/g, ''))] = [cells.eq(1).text(), meetingTimes, 1, credits, 0];
+
+                var conflict = findConflicts(dict);
+                var course_conflict = findDuplicateCourses(dict);
+                var c = Object.values(conflict)
+                var cc = Object.values(course_conflict)
+                var c_keys = Object.keys(conflict)
+                var cc_bool = true;
+                var course_temp_name = (Object.values(dict[(id.replace(/\s+/g, ''))])[0])
+                if (!($.isEmptyObject(course_conflict))){
+                    for (var cond of cc){
+                        for (var con of cond){
+                            if (con.includes((id.replace(/\s+/g, '')))) {
+                                cc_bool = false;
+                            }
+                        }
+                    }
+                }
+                var c_bool = true;
+                if (!($.isEmptyObject(conflict))){
+                    for (var con of c_keys){
+                        if ((conflict[con]).has(course_temp_name)) {
+                            c_bool = false;
+                        }
+                    }
+                }
+                if (($.isEmptyObject(conflict) && $.isEmptyObject(course_conflict)) || (c_bool && cc_bool)){
+                    $('#dataTable1').append('<tr><td style="width: 70%;">' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" checked><label  class="custom-control-label" for="'+trimmedmylist+'"></label></td><td style="text-align: right; width: 15%;"><label style="font-size: 10px; margin-top: 4px;" class="switch"><input name="checkbox_alt" id="'+trimmedmylist+'1" type="checkbox"><span class="slider round"></span></label></td></tr>');
                     visible = 1
                     for(var i = 0; i < meetingTimes.length; i++) {
                         var daytime = meetingTimes[i].split(/:(.+)/);
@@ -446,8 +471,9 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
                         $('#'+day).append('<li id="'+trimmedcrn+'" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
                     }
                  } else {
-                    $('#dataTable1').append('<tr><td>' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" ><label class="custom-control-label" for="'+trimmedmylist+'"></label></td></tr>');
+                    $('#mycoursesbody').append('<tr><td style="width: 70%;">' + cells.eq(1).text() + '</td><td style="text-align: right;" class="custom-control custom-checkbox"><input class="custom-control-input" name="checkbox_mylist" type="checkbox" id="'+trimmedmylist+'" ><label class="custom-control-label" for="'+trimmedmylist+'"></label></td><td style="text-align: right; width: 15%;"><label style="font-size: 10px; margin-top: 4px;" class="switch"><input name="checkbox_alt" id="'+trimmedmylist+'1" type="checkbox"><span class="slider round"></span></label></td></tr>');
                     visible = 0
+                    dict[(id.replace(/\s+/g, ''))][2] = 0;
                     for(var i = 0; i < meetingTimes.length; i++) {
                         var daytime = meetingTimes[i].split(/:(.+)/);
                         var day = daytime[0];
@@ -459,7 +485,7 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
                         $('#'+day).append('<li id="'+trimmedcrn+'" hidden="true" name="'+trimmedcrn+'" class="cd-schedule__event"><a data-start="'+starttime+'" data-end="'+endtime+'" data-content="" data-event="event-'+count.toString()+'" href="#0"><em class="cd-schedule__name">'+course+'</em></a></li>');
                     }
                  }
-                 var myJSON = JSON.stringify({append: [crnnum, cells.eq(1).text(), meetingTimes, visible, credits]});
+                 var myJSON = JSON.stringify({append: [crnnum, cells.eq(1).text(), meetingTimes, visible, credits, 0]});
                 $.ajax({
                   type: 'POST',
                   url: 'http://localhost:5000/h_update',
@@ -470,7 +496,6 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
                   },
                   contentType: 'application/octet-stream; charset=utf-8',
                   success: function(result) {
-                    console.log('added to session');
                   },
                   processData: false,
                   data: myJSON
@@ -497,7 +522,6 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
               },
               contentType: 'application/octet-stream; charset=utf-8',
               success: function(result) {
-                console.log('added to session');
               },
               processData: false,
               data: myJSON
@@ -511,115 +535,155 @@ $('input[name="checkbox"]:checkbox').on('change', function() {
 $(document).ready(function() {
     $('input[id^=select]').each(function() {
         $(this).trigger('click');
-        var MYLIST = '#MYLIST' + ((this.id).split('_'))[1];
-        if ((this.id).includes('select0_')){
-            $(MYLIST).trigger('click');
+    });
+
+    $('#mycoursesbody > tr').each(function() {
+        var CRN = (($(this).find("input[name='checkbox_mylist']")).attr('id')).replace('MYLIST','');
+        if (CRN in courseData_session){
+            if ((courseData_session[CRN][2] == 0) && (($(this).find("input[name='checkbox_mylist']")).prop("checked") == true)){
+                ($(this).find("input[name='checkbox_mylist']")).trigger('click');
+            }
+            if ((courseData_session[CRN][4] == 1)){
+                ($(this).find("input[name='checkbox_alt']")).trigger('click');
+            }
         }
     });
 });
 
 $('#mycoursesbody').on('change', 'input', function() {
+
     var $this = $(this);
-    console.log('disabled');
-    $this.attr('disabled');
 	var id = this.id.replace(/\D/g,'');;
     if (this.checked){
-        dict[(id.replace(/\s+/g, ''))][2] = 1;
-        var conflict = findConflicts(dict);
-        var course_conflict = findDuplicateCourses(dict);
-        console.log(conflict);
-        console.log(course_conflict);
-        var c = Object.values(conflict)
-        var cc = Object.values(course_conflict)[0]
-        if (cc != undefined){
-            cc = Object.values(course_conflict)[0][0]
-        }
-        console.log(Object.keys(course_conflict)[0]);
-        console.log(dict[(id.replace(/\s+/g, ''))][0]);
-        console.log(!(dict[(id.replace(/\s+/g, ''))][0].includes(Object.keys(course_conflict)[0])));
-        console.log(!(dict[(id.replace(/\s+/g, ''))][0].includes(cc)));
-        if ($.isEmptyObject(conflict) && $.isEmptyObject(course_conflict)){
-            console.log('NO CONFLICT');
-            var attr = $('li[name="CRN'+id+'"]').attr('hidden');
-            if (typeof attr !== typeof undefined && attr !== false) {
-                $('li[name="CRN'+id+'"]').removeAttr('hidden');
+        if (this.name == "checkbox_alt"){
+            var selected_array = []
+            for (var entry of Object.keys(dict)){
+                if (dict[entry][4] == 1){
+                    selected_array.push(dict[entry]);
+                }
             }
-            var myJSON = JSON.stringify({update: [id, 1]});
-            $.ajax({
-                  type: 'POST',
-                  url: 'http://localhost:5000/h_update',
-                  // Always include an `X-Requested-With` header in every AJAX request,
-                  // to protect against CSRF attacks.
-                  headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                  },
-                  contentType: 'application/octet-stream; charset=utf-8',
-                  success: function(result) {
-                    console.log('added to session');
-                  },
-                  processData: false,
-                  data: myJSON
-                });
-            $('li[name="CRN'+id+'"]').show(500);
-        } else {
-            console.log('CONFLICT');
-            if (this.checked){
-                that = this;
-                switched = -1;
-                if ($.isEmptyObject(course_conflict)){
-                    switched = 1;
-                }
-                else {
-                    switched = 0;
-                };
-                console.log(switched)
-                var myJSON = JSON.stringify({update: [id, 0]});
+            if (selected_array.length >= 6){
+                $(this).prop('checked', false);
+                $("#myModal_alt").modal();
+            } else {
+                id = id.slice(0, -1);
+                dict[(id.replace(/\s+/g, ''))][4] = 1;
+                var myJSON = JSON.stringify({update_alt: [id, 1]});
                 $.ajax({
-                  type: 'POST',
-                  url: 'http://localhost:5000/h_update',
-                  // Always include an `X-Requested-With` header in every AJAX request,
-                  // to protect against CSRF attacks.
-                  headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                  },
-                  contentType: 'application/octet-stream; charset=utf-8',
-                  success: function(result) {
-                    $(that).trigger('click');
-                  },
-                  processData: false,
-                  data: myJSON
-                });
-                if (switched == 1){
-                    var days = "";
-                    var courses = [];
-                    for (var day in conflict){
-                        days += day;
-                    }
-                    console.log('THIS IS CONFLICT')
-                    console.log(conflict);
-                    console.log(days);
-                    console.log(days[0]);
-                    conflict[days[0]].forEach(element => courses.push(element));
-                    $("#modalData").html('Course cannot be displayed because of time conflict on weekday(s): <b>' + days + '</b><br><br>Between the courses:<br><b>' + courses[0] + '</b><br><b>' + courses[1] + '</b>');
-                    $("#myModal").modal();
-                    dict[(id.replace(/\s+/g, ''))][2] = 0;
-                }
-                else if (switched == 0) {
-                    var coursename_con = Object.keys(course_conflict)[0];
-                    var courses_con = [];
-                    console.log(Object.keys(course_conflict)[0]);
-                    console.log(course_conflict);
-                    course_conflict[coursename_con].forEach(element => courses_con.push(element));
-                    $("#modalData2").html('Course cannot be displayed because you have already selected this course with different section: <br><br><b>' + coursename_con + '</b>');
-                    $("#myModal3").modal();
-                    dict[(id.replace(/\s+/g, ''))][2] = 0;
-                }
-            };
+                      type: 'POST',
+                      url: 'http://localhost:5000/h_update',
+                      // Always include an `X-Requested-With` header in every AJAX request,
+                      // to protect against CSRF attacks.
+                      headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                      },
+                      contentType: 'application/octet-stream; charset=utf-8',
+                      success: function(result) {
+                      },
+                      processData: false,
+                      data: myJSON
+                    });
+            }
+        }
+        else{
+            dict[(id.replace(/\s+/g, ''))][2] = 1;
+            var conflict = findConflicts(dict);
+            var course_conflict = findDuplicateCourses(dict);
 
-        };
+            var c = Object.values(conflict)
+            var cc = Object.values(course_conflict)
+            var c_keys = Object.keys(conflict)
+            var cc_bool = true;
+            var course_temp_name = (Object.values(dict[(id.replace(/\s+/g, ''))])[0])
+            if (!($.isEmptyObject(course_conflict))){
+                for (var con of cc){
+                    if (con.includes(id)) {
+                        cc_bool = false;
+                    }
+                }
+            }
+            var c_bool = true;
+            if (!($.isEmptyObject(conflict))){
+                for (var con of c_keys){
+                    if ((conflict[con]).has(course_temp_name)) {
+                        c_bool = false;
+                    }
+                }
+            }
+            if (($.isEmptyObject(conflict) && $.isEmptyObject(course_conflict)) || (c_bool && cc_bool)){
+                var attr = $('li[name="CRN'+id+'"]').attr('hidden');
+                if (typeof attr !== typeof undefined && attr !== false) {
+                    $('li[name="CRN'+id+'"]').removeAttr('hidden');
+                }
+                var myJSON = JSON.stringify({update: [id, 1]});
+                $.ajax({
+                      type: 'POST',
+                      url: 'http://localhost:5000/h_update',
+                      // Always include an `X-Requested-With` header in every AJAX request,
+                      // to protect against CSRF attacks.
+                      headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                      },
+                      contentType: 'application/octet-stream; charset=utf-8',
+                      success: function(result) {
+                      },
+                      processData: false,
+                      data: myJSON
+                    });
+                $('li[name="CRN'+id+'"]').show(500);
+            } else {
+                if (this.checked){
+                    that = this;
+                    switched = -1;
+                    if ($.isEmptyObject(course_conflict)){
+                        switched = 1;
+                    }
+                    else {
+                        switched = 0;
+                    };
+                    var myJSON = JSON.stringify({update: [id, 0]});
+                    $.ajax({
+                      type: 'POST',
+                      url: 'http://localhost:5000/h_update',
+                      // Always include an `X-Requested-With` header in every AJAX request,
+                      // to protect against CSRF attacks.
+                      headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                      },
+                      contentType: 'application/octet-stream; charset=utf-8',
+                      success: function(result) {
+                        $(that).trigger('click');
+                      },
+                      processData: false,
+                      data: myJSON
+                    });
+                    if (switched == 1){
+                        var days = "";
+                        var courses = [];
+                        for (var day in conflict){
+                            days += day;
+                        }
+                        conflict[days[0]].forEach(element => courses.push(element));
+                        $("#modalData").html('Course cannot be displayed because of time conflict on weekday(s): <b>' + days + '</b><br><br>Between the courses:<br><b>' + courses[0] + '</b><br><b>' + courses[1] + '</b>');
+                        $("#myModal").modal();
+                        dict[(id.replace(/\s+/g, ''))][2] = 0;
+                    }
+                    else if (switched == 0) {
+                        var course_selected = (Object.values(dict[(id.replace(/\s+/g, ''))])[0]).split("-")
+                        $("#modalData2").html('Course cannot be displayed because you have already selected this course with different section: <br><br><b>' + course_selected[0]+' - '+course_selected[1] + '</b>');
+                        $("#myModal3").modal();
+                        dict[(id.replace(/\s+/g, ''))][2] = 0;
+                    }
+                };
+
+            };
+        }
+
 	} else {
-        dict[(id.replace(/\s+/g, ''))][2] = 0;
-        var myJSON = JSON.stringify({update: [id, 0]});
+	    if (this.name == "checkbox_alt"){
+            id = id.slice(0, -1);
+            dict[(id.replace(/\s+/g, ''))][4] = 0;
+            var myJSON = JSON.stringify({update_alt: [id, 0]});
             $.ajax({
                   type: 'POST',
                   url: 'http://localhost:5000/h_update',
@@ -630,16 +694,35 @@ $('#mycoursesbody').on('change', 'input', function() {
                   },
                   contentType: 'application/octet-stream; charset=utf-8',
                   success: function(result) {
-                    console.log('added to session');
                   },
                   processData: false,
                   data: myJSON
                 });
-        $('li[name="CRN'+id+'"]').hide(500, function(){
-			$('li[name="CRN'+id+'"]').attr("hidden","true");
-		});
+        }
+        else{
+            dict[(id.replace(/\s+/g, ''))][2] = 0;
+            var myJSON = JSON.stringify({update: [id, 0]});
+                $.ajax({
+                      type: 'POST',
+                      url: 'http://localhost:5000/h_update',
+                      // Always include an `X-Requested-With` header in every AJAX request,
+                      // to protect against CSRF attacks.
+                      headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                      },
+                      contentType: 'application/octet-stream; charset=utf-8',
+                      success: function(result) {
+                      },
+                      processData: false,
+                      data: myJSON
+                    });
+            $('li[name="CRN'+id+'"]').hide(500, function(){
+                $('li[name="CRN'+id+'"]').attr("hidden","true");
+            });
+        }
+
 	};
-    $this.removeAttr('disabled');
+    console.log(dict)
 });
 
 $("#saveSchedule").click(function() {
@@ -746,16 +829,15 @@ function findDuplicateCourses(courses) {
     var courseTitle = courseInfo[0];
     courseTitle = courseTitle.split(" - ", 2);
     var key = courseTitle[0] + " - " + courseTitle[1];
-
-    if (key in courseCounts) {
-      courseCounts[key][0] += 1;
-      courseCounts[key][1].push(crn);
-    } else {
-      courseCounts[key] = [1, [crn]];
+    if (courseInfo[2] != 0){
+        if (key in courseCounts) {
+          courseCounts[key][0] += 1;
+          courseCounts[key][1].push(crn);
+        } else {
+          courseCounts[key] = [1, [crn]];
+        }
     }
-
   }
-  console.log(courseCounts);
   /*
   Add courses to Duplicate dictionary of count is greater than 1.
   Format: duplicates[TITLE & COURSE NUMBER] = [CRN's]

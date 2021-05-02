@@ -28,10 +28,22 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="../static/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-
+    <link rel="stylesheet" href="static/css/Toggle-Switch.css">
 </head>
 
 <body id="page-top">
+    <div id="myModal_alt" class="modal fade rubberBand animated" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Alternative Course Limit</h4></div>
+                <div class="modal-body">
+                    <p>You have reached the maximum amount of <b>6 courses</b> allowed. Please uncheck alternative courses to add more.</p>
+                </div>
+                <div class="modal-footer"><button class="btn btn-warning" data-dismiss="modal" type="button">Dismiss</button></div>
+            </div>
+        </div>
+    </div>
     <div id="myModal3" class="modal fade rubberBand animated" role="dialog" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -228,8 +240,9 @@
                                     <table class="table my-0" id="dataTable1">
                                         <thead>
                                             <tr>
-                                                <th>Courses</th>
-                                                <th style="text-align: right; padding-right: 19px;"><i class="fa fa-eye"></i></th>
+                                                <th style="width: 70%;">Courses</th>
+                                                <th style="text-align: right; width: 15%;"></th>
+                                                <th style="text-align: right; width: 15%;">Alt</th>
                                             </tr>
                                         </thead>
                                         <tbody id='mycoursesbody'>
@@ -240,7 +253,7 @@
                                     </table>
                                 </div>
                             </div>
-
+                        </div>
                     </div>
                 </div>
             </div>
@@ -313,15 +326,20 @@
                 </div>
             </div>
         </div>
+
+
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span></span></div>
             </div>
-    <footer class="bg-white sticky-footer">
-        <div class="container my-auto">
-            <div class="text-center my-auto copyright"><span></span></div>
-        </div>
-    </footer>
+        </footer>
     </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/js/util.js"></script>
+    <script type="text/javascript">
+      var courseData_session = {{ mylist | safe }}
+    </script>
     <script src="../static/js/main.js"></script>
     <script src="../static/js/chart.min.js"></script>
     <script src="../static/js/bs-init.js"></script>
