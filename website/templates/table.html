@@ -88,10 +88,86 @@
                 <h3 class="text-dark mb-4">Registration</h3>
                 <div class="row">
                     <div class="col">
-                        <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1" role="button">Autofill PDF (Google Login Required)</a>
+                        <div class="shadow card" style="margin-top: 5px;margin-bottom: 10px;"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-1" href="#collapse-1" role="button">Autofill PDF</a>
                             <div class="collapse show" id="collapse-1">
                                 <div class="card-body">
-                                    <p class="m-0">This feature allows data other than your course information to be filled in the PDF form and also saved to our secure database. To use this feature please sign in with your Manhattan College Google Account.</p>
+                                    <form method="post">
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" id="first_name" name="first_name" value="{{p_data[0]}}"></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" id="last_name" name="last_name" value="{{p_data[1]}}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label for="campusID"><strong>Campus ID #</strong><br></label><input class="form-control" type="text" id="campusID" name="campusID" value="{{p_data[2]}}"></div>
+                                            </div>
+                                            <div class="col"><label><strong>Status</strong><br></label>
+                                                <select name="status" class="form-control">
+                                                    <option value="0"></option>
+                                                    <option value="1" {{"selected" if p_data[3]=="1"}}>Freshman</option>
+                                                    <option value="2" {{"selected" if p_data[3]=="2"}}>Sophomore</option>
+                                                    <option value="3" {{"selected" if p_data[3]=="3"}}>Junior</option>
+                                                    <option value="4" {{"selected" if p_data[3]=="4"}}>Senior</option>
+                                                    <option value="5" {{"selected" if p_data[3]=="5"}}>Non-Matriculated</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <div class="form-group"><label><strong>Program of Study</strong><br></label>
+                                                    <div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos1" name="poStudy1" {{"checked" if p_data[4]=="on"}}><label class="custom-control-label" for="formCheck-Pos1">Arts</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos2" name="poStudy2" {{"checked" if p_data[5]=="on"}}><label class="custom-control-label" for="formCheck-Pos2">Business</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos3" name="poStudy3" {{"checked" if p_data[6]=="on"}}><label class="custom-control-label" for="formCheck-Pos3">Education</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos4" name="poStudy4" {{"checked" if p_data[7]=="on"}}><label class="custom-control-label" for="formCheck-Pos4">Engineering</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos5" name="poStudy5" {{"checked" if p_data[8]=="on"}}><label class="custom-control-label" for="formCheck-Pos5">Science</label></div>
+                                                        <div class="custom-control custom-checkbox"><input class="custom-control-input" type="checkbox" id="formCheck-Pos6" name="poStudy6" {{"checked" if p_data[9]=="on"}}><label class="custom-control-label" for="formCheck-Pos6">SCPS</label></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-group"><label><strong>Major</strong><br></label><input class="form-control" id="major1" type="text" name="major1" value="{{p_data[10]}}"><input class="form-control" id="major2" type="text" name="major2" value="{{p_data[11]}}"></div>
+                                                <div class="form-group"><label><strong>Minor</strong><br></label><input class="form-control" id="minor1" type="text" name="minor1" value="{{p_data[12]}}"><input class="form-control" id="minor2" type="text" name="minor2" value="{{p_data[13]}}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"><label><strong>Semester</strong><br></label>
+                                            <div class="form-row">
+                                                <div class="col"><select name="semester" class="form-control"><option value="" selected=""></option><option value="Fall" {{"selected" if p_data[14]=="Fall"}}>Fall</option><option value="Spring" {{"selected" if p_data[14]=="Spring"}}>Spring</option></select></div>
+                                                <div class="col"><select name="year" class="form-control"><option value="" selected=""></option><option value="2021" {{"selected" if p_data[15]=="2021"}}>2021</option><option value="2022" {{"selected" if p_data[15]=="2022"}}>2022</option><option value="2023" {{"selected" if p_data[15]=="2023"}}>2023</option><option value="2024" {{"selected" if p_data[15]=="2024"}}>2024</option><option value="2025" {{"selected" if p_data[15]=="2025"}}>2025</option><option value="2026" {{"selected" if p_data[15]=="2026"}}>2026</option></select></div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="form-group"><label><strong>Graduation</strong><br></label>
+                                            <div class="form-row">
+                                                <div class="col"><select name="gradSem" class="form-control">
+                                                    <option value="" selected=""></option>
+                                                    <option value="Jan" {{"selected" if p_data[16]=="Jan"}}>January</option>
+                                                    <option value="Feb" {{"selected" if p_data[16]=="Feb"}}>February</option>
+                                                    <option value="Mar" {{"selected" if p_data[16]=="Mar"}}>March</option>
+                                                    <option value="Apr" {{"selected" if p_data[16]=="Apr"}}>April</option>
+                                                    <option value="May" {{"selected" if p_data[16]=="May"}}>May</option>
+                                                    <option value="Jun" {{"selected" if p_data[16]=="Jun"}}>June</option>
+                                                    <option value="Jul" {{"selected" if p_data[16]=="Jul"}}>July</option>
+                                                    <option value="Aug" {{"selected" if p_data[16]=="Aug"}}>August</option>
+                                                    <option value="Sept" {{"selected" if p_data[16]=="Sept"}}>September</option>
+                                                    <option value="Oct" {{"selected" if p_data[16]=="Oct"}}>October</option>
+                                                    <option value="Nov" {{"selected" if p_data[16]=="Nov"}}>November</option>
+                                                    <option value="Dec" {{"selected" if p_data[16]=="Dec"}}>December</option>
+                                                </select>
+                                                </div>
+                                                <div
+                                                    class="col"><select name="gradYear" class="form-control"><option value="" selected=""></option><option value="2021" {{"selected" if p_data[17]=="2021"}}>2021</option><option value="2022" {{"selected" if p_data[17]=="2022"}}>2022</option><option value="2023" {{"selected" if p_data[17]=="2023"}}>2023</option><option value="2024" {{"selected" if p_data[17]=="2024"}}>2024</option><option value="2025" {{"selected" if p_data[17]=="2025"}}>2025</option><option value="2026" {{"selected" if p_data[17]=="2026"}}>2026</option></select></div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label><strong>Signature Permission**</strong><br></label>
+                                <p class="m-0" style="font-style: italic;">Check the box below to allow us to create an automated signature of your full name for the registration form.&nbsp;</p>
+                                <div class="custom-control custom-checkbox" style="margin-top: 3px;"><input class="custom-control-input" type="checkbox" id="formCheck-6" name="formCheck-6"  {{"checked" if p_data[18]=="on"}}><label class="custom-control-label" for="formCheck-6">Create an automated signature for me.</label></div>
+                            </div>
+                            <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Data</button></div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -101,10 +177,9 @@
                     <div class="collapse show" id="collapse-4">
                         <div class="card-body">
                             <p class="m-0">On this Registration Tab as long as you have selected your classes previously
-                                in the Dashboard Tab and <strong>saved</strong>, they will auto fill into the PDF registration document. You have the
-                                ability to set up auto fill for other personal data. You also have the ability where the website can place a
-                                generated signature the document with your permission.
-                                Finally we provide you the ability to email it to your advisor or save the email as a draft
+                                in the Dashboard Tab, they will auto fill into the PDF registration document. You also have the ability to set up auto fill for other personal data. <strong>If you are
+                                signed in</strong>  You will have the ability in which the website can place a generated signature on the document with your permission.
+                                Signed in you will be able to email your registration form to your advisor or save the email as a draft
                                 in your Manhattan College Gmail Account.</p>
                             <div class="row">
                                 <div class="col">
@@ -141,10 +216,12 @@
         </div>
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-primary m-0 font-weight-bold">Registration Form</p>
+                <div class="col">
+                    <p class="text-primary m-0 font-weight-bold">Registration Form</p>
+                </div>
             </div>
             <div class="card-body" style="height:1120px;">
-                <object data="{{path}}" type="application/pdf" width="100%" height="100%"></object>
+                <object id="pdf_objec" data="{{path}}" type="application/pdf" width="100%" height="100%"></object>
             </div>
         </div>
     </div>

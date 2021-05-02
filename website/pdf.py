@@ -76,7 +76,31 @@ x = {
     "'(CrRow7)'" : ['CREDIT_7', ""],
     "'(Total Credits)'" : ['TOTAL_CREDITS', ""],
     "'(Student Signature)'" : 'STUDENT_SIGNATURE',
-    "'(Date)'": ['DATE', ""]
+    "'(Date)'": ['DATE', ""],
+    "'(CRN_2)'" : ['ALT_CRN_1', ""],
+    "'(Dept_2)'" : ['ALT_DEPT_1', ""],
+    "'(Crs_2)'" : ['ALT_CRS_1', ""],
+    "'(Sec_2)'" : ['ALT_SEC_1', ""],
+    "'(CRN_3)'" : ['ALT_CRN_2', ""],
+    "'(Dept_3)'" : ['ALT_DEPT_2', ""],
+    "'(Crs_3)'" : ['ALT_CRS_2', ""],
+    "'(Sec_3)'" : ['ALT_SEC_2', ""],
+    "'(undefined_29)'" : ['ALT_CRN_3', ""],
+    "'(undefined_30)'" : ['ALT_DEPT_3', ""],
+    "'(undefined_31)'" : ['ALT_CRS_3', ""],
+    "'(undefined_32)'" : ['ALT_SEC_3', ""],
+    "'(undefined_33)'" : ['ALT_CRN_4', ""],
+    "'(undefined_34)'" : ['ALT_DEPT_4', ""],
+    "'(undefined_35)'" : ['ALT_CRS_4', ""],
+    "'(undefined_36)'" : ['ALT_SEC_4', ""],
+    "'(undefined_37)'" : ['ALT_CRN_5', ""],
+    "'(undefined_38)'" : ['ALT_DEPT_5', ""],
+    "'(undefined_39)'" : ['ALT_CRS_5', ""],
+    "'(undefined_40)'" : ['ALT_SEC_5', ""],
+    "'(undefined_41)'" : ['ALT_CRN_6', ""],
+    "'(undefined_42)'" : ['ALT_DEPT_6', ""],
+    "'(undefined_43)'" : ['ALT_CRS_6', ""],
+    "'(undefined_44)'": ['ALT_SEC_6', ""]
 }
 
 
@@ -174,9 +198,8 @@ def fillPDF(p_data, userInfoDict, name):
         pdfrw.PdfWriter().write(exportname, template_pdf)
         return exportname, totalCreditCount
 
-def fillPDFsession(userInfoDict):
-    num = random.randint(1000, 9999999999)
-    exportname = 'website/static/pdf/undergraduate_reg_export-'+str(num)+str(time.time())+'.pdf'
+def fillPDFsession(userInfoDict, name):
+    exportname = 'website/static/pdf/' + name
     template_pdf = pdfrw.PdfReader(os.getenv("PATH4PDF")) # Path to PDF form (local)
     annotations = template_pdf.pages[0]['/Annots']
     i = 0
@@ -211,7 +234,7 @@ def updateX(mylist, userInfoDict):
         print(entry)
         info = mylist[entry]
         print(info)
-        if int(info[2]) == 0:
+        if int(info[2]) == 0 or int(info[4]) == 1:
             continue
         count += 1
         ndcs = info[0].split('-')
@@ -237,15 +260,41 @@ def updateX(mylist, userInfoDict):
         tempArr = []
     return count
 
+def updateALT(mylist, userInfoDict):
+    tempArr = []
+    startIndex = 67
+    for entry in mylist:
+        print(entry)
+        info = mylist[entry]
+        print(info)
+        if int(info[4]) == 0:
+            continue
+        ndcs = info[0].split('-')
+        tempArr.append(entry)
+        dc = ndcs[1].strip()
+        dept = dc.split()[0]
+        tempArr.append(dept)
+        crs = dc.split()[1]
+        tempArr.append(crs)
+        section = ndcs[2].strip()
+        tempArr.append(section)
+        for y in range(0, 4):
+            currentval = userInfoDict[list(userInfoDict)[startIndex]]
+            print(startIndex)
+            print(currentval)
+            currentval[1] = tempArr[y]
+            startIndex += 1
+        tempArr = []
 
-def run(mylist):
+def run(mylist, name):
     userInfoDict = copy.deepcopy(x)
     courses = updateX(mylist, userInfoDict)
-    exportdelname, cred = fillPDFsession(userInfoDict)
+    exportdelname, cred = fillPDFsession(userInfoDict, name)
     return exportdelname, cred, courses
 
 def runfull(mylist, p_data, name):
     userInfoDict = copy.deepcopy(x)
     courses = updateX(mylist, userInfoDict)
+    updateALT(mylist, userInfoDict)
     exportdelname, cred = fillPDF(p_data, userInfoDict, name)
     return exportdelname, cred, courses
