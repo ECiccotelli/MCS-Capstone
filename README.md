@@ -11,18 +11,16 @@ Once your calendar is made, you can use the autofill registration form to autofi
 
 # Application Images
 
-Dashboard: 
 ![MCS Dashboard](https://github.com/ECiccotelli/MCS-Capstone/blob/main/images/dashboard.PNG)
 
-Autofill Form: 
+
 ![Autofill Form](https://github.com/ECiccotelli/MCS-Capstone/blob/main/images/autofill.PNG)
 
-PDF Autofill: 
+
 ![PDF](https://github.com/ECiccotelli/MCS-Capstone/blob/main/images/pdf.PNG)
 
-Email to Advisor: 
+
 ![Email](https://github.com/ECiccotelli/MCS-Capstone/blob/main/images/email.PNG)
 
 
-FAQ/Help Page: 
 ![FAQ](https://github.com/ECiccotelli/MCS-Capstone/blob/main/images/FAQ.PNG)
