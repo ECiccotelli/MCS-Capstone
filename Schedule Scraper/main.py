@@ -1,7 +1,7 @@
 
 
-from discordSender import sendDiscordMessage, sendDiscordInitialize
-from database import queryCRNs, insertData
+from discordSender import sendDiscordMessage, sendDiscordInitialize, deletionWarningMessenger
+from database import queryCRNs, insertData, removeCRN
 from classScraper import *
 import time
 
@@ -47,11 +47,35 @@ if __name__ == "__main__":
             error = True
             pass
 
+        #Queries all CRNs currently in database
+        dbCRNS = queryCRNs()
+
+        #Removes spaces from crns
+        crnList = list(map(str.strip, crnList))
+
+        removed = 0
+        #toDelete = []
+        for crn in dbCRNS:
+            if crn not in crnList:
+                #print("This CRN is in the database but NOT scraped - should remove! " + str(crn))
+                #toDelete.append(crn)
+                removeCRN(crn)
+                removed+=1
+                if removed > 50:
+                    deletionWarningMessenger()
+                    break
+
+        
+        
+        #for deleteCRN in toDelete:
+            #removeCRN(deleteCRN)
+            #removed+=1
+
         endTime = time.time()
         if error:
             sendDiscordMessage(False, str(endTime - startTime), 0)
         else:
-            sendDiscordMessage(True, str(endTime - startTime), classCounter)
+            sendDiscordMessage(True, str(endTime - startTime), removed, classCounter)
         
         print("Sleeping for 60 minutes")
         time.sleep(3600)

@@ -57,6 +57,11 @@ def initializeBrowser():
     driver.implicitly_wait(15)
     time.sleep(15)
 
+    #with open("TESTSOURCEABC.html", "w") as f:
+        #f.write(driver.page_source)
+
+    
+
     
     html_doc = driver.page_source
 

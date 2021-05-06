@@ -3,7 +3,7 @@ from google.cloud import datastore
 import os
 import sys
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(sys.path[0], "mc-scheduleMaker.json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(sys.path[0], "mc-scheduleMaker-ee3731698260.json")
 
 client = datastore.Client()
 
@@ -11,14 +11,25 @@ query = client.query(kind="Courses")
 
 
 
-databaseCRN = []
+
 def queryCRNs():
+    databaseCRN = []
     query = client.query(kind='Courses')
     results = list(query.fetch())
     for entity in results:
         st = str(entity.key.id_or_name).strip()
         databaseCRN.append(st)
+    return databaseCRN
 
+def removeCRN(crn):
+    crn = " " + crn + " "
+    query = client.query(kind='Courses')
+    first_key = client.key("Courses", crn)
+    query.key_filter(first_key, "=")
+
+    results = query.fetch()
+
+    client.delete(first_key)
 
 def insertData(crn, credits, instructor, location, meetingTimes, scheduleType, title, classType, abbr, section):
 
